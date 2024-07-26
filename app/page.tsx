@@ -40,7 +40,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
 
         const containerWidth = previewRef.current.offsetWidth;
         const containerHeight = previewRef.current.offsetHeight;
-        const baseFontSize = Math.min(containerWidth, containerHeight) * 0.04; // 4% of smaller dimension as base font size
+        const baseFontSize = Math.min(containerWidth, containerHeight) * 0.1; // 4% of smaller dimension as base font size
 
         let newFontSizes = regenerateFontSizes(baseFontSize);
         let attempts = 0;
