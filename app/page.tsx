@@ -2,6 +2,7 @@
 'use client'
 
 import React, { useState, useRef } from 'react';
+import { Twitter, Globe } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import {Card, CardContent} from "../components/ui/card";
 import {Textarea} from "../components/ui/textarea";
@@ -31,8 +32,8 @@ const TextToImageGenerator = () => {
     };
 
     return (
-        <div className="min-h-screen bg-white p-16 huiwen-font">
-            <Card className="max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-lg">
+        <div className="min-h-screen bg-white p-16 huiwen-font flex flex-col">
+            <Card className="max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-lg flex-grow">
                 <CardContent className="p-8">
                     <h1 className="text-3xl font-bold mb-6 text-[#166434]">文字生成图片工具</h1>
                     <div className="flex flex-col md:flex-row gap-8">
@@ -70,6 +71,27 @@ const TextToImageGenerator = () => {
                     </div>
                 </CardContent>
             </Card>
+            <footer className="mt-8 text-center">
+                <div className="flex justify-center space-x-4">
+                    <a
+                        href="https://x.com/benshandebiao"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-600 hover:text-black transition-colors duration-200"
+                    >
+                        <Twitter size={24} />
+                    </a>
+                    <a
+                        href="https://pomodiary.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-600 hover:text-black transition-colors duration-200"
+                    >
+                        <Globe size={24} />
+                    </a>
+                </div>
+                <p className="mt-2 text-sm text-gray-500">© 2024 文字生成图片工具. All rights reserved.</p>
+            </footer>
         </div>
     );
 };
