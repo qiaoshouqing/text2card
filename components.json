@@ -13,5 +13,6 @@
   "aliases": {
     "components": "@/components",
     "utils": "@/lib/utils"
-  }
+  },
+  "componentPath": "@/components/ui"
 }

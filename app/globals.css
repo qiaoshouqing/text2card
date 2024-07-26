@@ -17,3 +17,46 @@ body {
 .huiwen-font {
   font-family: 'Huiwen_mingchao', sans-serif;
 }
+
+
+/* 在 globals.css 中添加 */
+
+.text-preview {
+  --aspect-ratio: 1.618;
+  background-color: #f3f4f6;
+  border-radius: 1rem;
+  padding: 2rem 2.5rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.text-preview.horizontal {
+  aspect-ratio: var(--aspect-ratio) / 1;
+  min-height: 61.8vh;
+}
+
+.text-preview.vertical {
+  aspect-ratio: 1 / var(--aspect-ratio);
+  min-height: 100%;
+}
+
+@media (max-width: 768px) {
+  .text-preview {
+    padding: 1.5rem 2rem;
+  }
+
+  .text-preview.horizontal {
+    aspect-ratio: auto;
+    height: 0;
+    padding-bottom: calc(100% / var(--aspect-ratio));
+  }
+}
+
+@media (min-width: 769px) {
+  .text-preview.horizontal {
+    min-height: auto;
+  }
+}
