@@ -1,7 +1,7 @@
 // app/page.tsx
 'use client'
 
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent } from "../components/ui/card";
 import { Textarea } from "../components/ui/textarea";
 import { Button } from "../components/ui/button";
@@ -80,46 +80,57 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
 
     return (
         <div
-            ref={previewRef}
-            className="text-preview"
             style={{
-                backgroundColor: '#f3f4f6',
-                borderRadius: typeof window === 'undefined' ? '1rem' : window.innerWidth < 768 ? '0.75rem' : '1rem',
-                padding: '2rem',
-                width: '100%',
-                aspectRatio: isVertical ? '1 / 1.618' : '1.618 / 1',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-                overflow: 'hidden',
+                backgroundColor: '#fff', // 外部背景色为白色
+                padding: '1rem', // 外边距
+                borderRadius: '1.25rem', // 外边框圆角
+                width: '100%', // 使外部容器占满整个宽度
+                boxSizing: 'border-box', // 包括 padding 在内计算宽度
             }}
         >
             <div
-                ref={contentRef}
+                ref={previewRef}
+                className="text-preview"
                 style={{
+                    backgroundColor: '#f3f4f6',
+                    borderRadius: typeof window === 'undefined' ? '1rem' : window.innerWidth < 768 ? '0.75rem' : '1rem',
+                    padding: '2rem',
                     width: '100%',
-                    color: '#166434',
-                    wordBreak: 'break-word',
-                    whiteSpace: 'pre-wrap',
-                    fontFamily: fontsLoaded ? 'Huiwen_mingchao, sans-serif' : 'sans-serif',
+                    aspectRatio: isVertical ? '1 / 1.618' : '1.618 / 1',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'flex-start',
+                    overflow: 'hidden',
                 }}
             >
-                {text.split('\n\n').map((paragraph, index) => (
-                    <p
-                        key={index}
-                        style={{
-                            fontSize: `${fontSizes[index] || 12}px`,
-                            lineHeight: '1.5',
-                            marginBottom: '1rem',
-                            textAlign: 'left',
-                        }}
-                    >
-                        {paragraph}
-                    </p>
-                ))}
+                <div
+                    ref={contentRef}
+                    style={{
+                        width: '100%',
+                        color: '#166434',
+                        wordBreak: 'break-word',
+                        whiteSpace: 'pre-wrap',
+                        fontFamily: fontsLoaded ? 'Huiwen_mingchao, sans-serif' : 'sans-serif',
+                    }}
+                >
+                    {text.split('\n\n').map((paragraph, index) => (
+                        <p
+                            key={index}
+                            style={{
+                                fontSize: `${fontSizes[index] || 12}px`,
+                                lineHeight: '1.5',
+                                marginBottom: '1rem',
+                                textAlign: 'left',
+                            }}
+                        >
+                            {paragraph}
+                        </p>
+                    ))}
+                </div>
             </div>
         </div>
+
     );
 };
 
@@ -242,7 +253,7 @@ const TextToImageGenerator: React.FC = () => {
                                 </Button>
                             </div>
                         </div>
-                        <div className={`flex-1 ${isVertical ? 'lg:w-2/3 mx-auto' : ''}`} ref={canvasRef}>
+                        <div className={`flex-1 flex items-center justify-center ${isVertical ? 'lg:w-2/3 mx-auto' : ''}`} ref={canvasRef}>
                             <TextPreview text={text} fontsLoaded={fontsLoaded} isVertical={isVertical} />
                         </div>
                     </div>
