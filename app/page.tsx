@@ -1,4 +1,3 @@
-// app/page.tsx
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -6,7 +5,7 @@ import { Card, CardContent } from "../components/ui/card";
 import { Textarea } from "../components/ui/textarea";
 import { Button } from "../components/ui/button";
 import { Switch } from "../components/ui/switch";
-import { Twitter, Globe, Github, Copy, Trash2 } from 'lucide-react';
+import { Twitter, Globe, Github, Copy, Trash2, Download, Shuffle } from 'lucide-react';
 import html2canvas from 'html2canvas';
 
 const defaultText = `我总是不假思索地在上路， 因为出发的感觉真是太好了
@@ -19,35 +18,36 @@ interface TextPreviewProps {
     text: string;
     fontsLoaded: boolean;
     isVertical: boolean;
+    randomLayout: boolean;
 }
 
-const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical }) => {
+const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical, randomLayout }) => {
     const previewRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
     const [fontSizes, setFontSizes] = useState<number[]>([]);
+    const [previewSize, setPreviewSize] = useState({ width: 0, height: 0 });
 
-    const getRandomFontSize = () => {
-        return Math.floor(Math.random() * (48 - 12 + 1) + 12);
+    const getRandomFontSize = (baseSize: number) => {
+        return Math.floor(Math.random() * (baseSize * 2 - baseSize / 2 + 1) + baseSize / 2);
     };
 
-    const regenerateFontSizes = () => {
-        return text.split('\n\n').map(() => getRandomFontSize());
+    const regenerateFontSizes = (baseSize: number) => {
+        return text.split('\n\n').map(() => getRandomFontSize(baseSize));
     };
 
     const checkAndAdjustFontSizes = () => {
         if (!previewRef.current || !contentRef.current) return;
 
-        const containerWidth = previewRef.current.offsetWidth - 64; // 考虑 padding
-        const containerHeight = isVertical
-            ? previewRef.current.offsetWidth * 1.618 - 64
-            : previewRef.current.offsetWidth / 1.618 - 64;
+        const containerWidth = previewRef.current.offsetWidth;
+        const containerHeight = previewRef.current.offsetHeight;
+        const baseFontSize = Math.min(containerWidth, containerHeight) * 0.04; // 4% of smaller dimension as base font size
 
-        let newFontSizes = regenerateFontSizes();
+        let newFontSizes = regenerateFontSizes(baseFontSize);
         let attempts = 0;
         const maxAttempts = 100;
 
         while (attempts < maxAttempts) {
-            contentRef.current.style.fontSize = '12px'; // 重置字体大小
+            contentRef.current.style.fontSize = `${baseFontSize}px`;
             newFontSizes.forEach((size, index) => {
                 const paragraph = contentRef.current!.children[index] as HTMLParagraphElement;
                 if (paragraph) {
@@ -55,37 +55,61 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
                 }
             });
 
-            if (contentRef.current.scrollWidth <= containerWidth &&
-                contentRef.current.scrollHeight <= containerHeight) {
+            const isOverflowing = contentRef.current.scrollWidth > containerWidth ||
+                contentRef.current.scrollHeight > containerHeight;
+
+            if (!isOverflowing) {
                 break;
             }
 
-            newFontSizes = newFontSizes.map(size => Math.max(size - 1, 12));
+            newFontSizes = newFontSizes.map(size => Math.max(size * 0.9, baseFontSize / 2));
             attempts++;
+        }
+
+        if (attempts === maxAttempts) {
+            // If we've reached max attempts, set all font sizes to the minimum
+            newFontSizes = newFontSizes.map(() => baseFontSize / 2);
         }
 
         setFontSizes(newFontSizes);
     };
 
-    useEffect(() => {
-        checkAndAdjustFontSizes();
-    }, [text, isVertical, fontsLoaded]);
+    const updatePreviewSize = () => {
+        if (previewRef.current) {
+            const width = previewRef.current.offsetWidth;
+            const height = isVertical ? width * 1.618 : width / 1.618;
+            setPreviewSize({ width, height });
+        }
+    };
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            window.addEventListener('resize', checkAndAdjustFontSizes);
-            return () => window.removeEventListener('resize', checkAndAdjustFontSizes);
+        updatePreviewSize();
+        window.addEventListener('resize', updatePreviewSize);
+        return () => window.removeEventListener('resize', updatePreviewSize);
+    }, [isVertical]);
+
+    useEffect(() => {
+        if (fontsLoaded) {
+            checkAndAdjustFontSizes();
         }
-    }, []);
+    }, [text, fontsLoaded, randomLayout, previewSize]);
+
+    const getBorderRadius = () => {
+        return `${previewSize.width * 0.05}px`; // 5% of width
+    };
+
+    const getPadding = () => {
+        return `${previewSize.width * 0.06}px`; // 6% of width
+    };
 
     return (
         <div
             style={{
-                backgroundColor: '#fff', // 外部背景色为白色
-                padding: '1rem', // 外边距
-                borderRadius: '1.25rem', // 外边框圆角
-                width: '100%', // 使外部容器占满整个宽度
-                boxSizing: 'border-box', // 包括 padding 在内计算宽度
+                backgroundColor: '#fff',
+                padding: `${previewSize.width * 0.03}px`, // 3% of width
+                borderRadius: `${previewSize.width * 0.0375}px`, // 3.75% of width
+                width: '100%',
+                boxSizing: 'border-box',
             }}
         >
             <div
@@ -93,10 +117,10 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
                 className="text-preview"
                 style={{
                     backgroundColor: '#f3f4f6',
-                    borderRadius: typeof window === 'undefined' ? '1rem' : window.innerWidth < 768 ? '0.75rem' : '1rem',
-                    padding: '2rem',
+                    borderRadius: getBorderRadius(),
+                    padding: getPadding(),
                     width: '100%',
-                    aspectRatio: isVertical ? '1 / 1.618' : '1.618 / 1',
+                    height: `${previewSize.height}px`,
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
@@ -108,19 +132,21 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
                     ref={contentRef}
                     style={{
                         width: '100%',
+                        height: '100%',
                         color: '#166434',
                         wordBreak: 'break-word',
                         whiteSpace: 'pre-wrap',
                         fontFamily: fontsLoaded ? 'Huiwen_mingchao, sans-serif' : 'sans-serif',
+                        overflow: 'hidden',
                     }}
                 >
                     {text.split('\n\n').map((paragraph, index) => (
                         <p
                             key={index}
                             style={{
-                                fontSize: `${fontSizes[index] || 12}px`,
+                                fontSize: `${fontSizes[index] || previewSize.width * 0.04}px`,
                                 lineHeight: '1.5',
-                                marginBottom: '1rem',
+                                marginBottom: `${previewSize.width * 0.02}px`, // 2% of width
                                 textAlign: 'left',
                             }}
                         >
@@ -130,7 +156,6 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
                 </div>
             </div>
         </div>
-
     );
 };
 
@@ -138,12 +163,22 @@ const TextToImageGenerator: React.FC = () => {
     const [text, setText] = useState<string>(defaultText);
     const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
     const [isVertical, setIsVertical] = useState<boolean>(false);
+    const [randomLayout, setRandomLayout] = useState<boolean>(false);
     const canvasRef = useRef<HTMLDivElement>(null);
+    const [isMobile, setIsMobile] = useState<boolean>(false);
 
     useEffect(() => {
         document.fonts.ready.then(() => {
             setFontsLoaded(true);
         });
+
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
     const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -162,13 +197,8 @@ const TextToImageGenerator: React.FC = () => {
                 useCORS: true,
                 onclone: (clonedDoc) => {
                     const clonedElement = clonedDoc.querySelector('.text-preview');
-                    if (typeof window !== 'undefined') {
-                        if (clonedElement && clonedElement instanceof HTMLElement) {
-                            if (typeof window !== 'undefined') {
-                                clonedElement.style.borderRadius = window.innerWidth < 768 ? '0.75rem' : '1rem';
-                                clonedElement.style.overflow = 'hidden';
-                            }
-                        }
+                    if (clonedElement instanceof HTMLElement) {
+                        clonedElement.style.overflow = 'hidden';
                     }
                 }
             }).then((canvas) => {
@@ -208,9 +238,13 @@ const TextToImageGenerator: React.FC = () => {
         setText('');
     };
 
+    const handleRandomLayout = () => {
+        setRandomLayout(prev => !prev);
+    };
+
     return (
-        <div className="min-h-screen bg-[#EFEEE5] p-6 md:p-10 lg:p-16 huiwen-font flex flex-col">
-            <Card className={`w-full mx-auto rounded-2xl overflow-hidden shadow-lg flex-grow bg-white ${isVertical ? 'max-w-3xl' : 'max-w-6xl'}`}>
+        <div className={`min-h-screen bg-[#EFEEE5] p-6 md:p-10 lg:p-16 huiwen-font flex flex-col ${isVertical && !isMobile ? 'items-center' : ''}`}>
+            <Card className={`w-full mx-auto rounded-2xl overflow-hidden shadow-lg flex-grow bg-white ${isVertical && !isMobile ? 'max-w-2xl' : ''}`}>
                 <CardContent className="p-6 md:p-8 lg:p-10">
                     <h1 className="text-2xl md:text-3xl font-bold mb-6 text-[#166434]">文字生成图片工具</h1>
                     <div className="flex items-center justify-between mb-4">
@@ -222,8 +256,14 @@ const TextToImageGenerator: React.FC = () => {
                             />
                             <span>竖版</span>
                         </div>
+                        <Button
+                            onClick={handleRandomLayout}
+                            className="huiwen-font bg-purple-500 text-white hover:bg-purple-600 rounded-xl text-sm md:text-base py-2 px-4"
+                        >
+                            <Shuffle className="mr-2 h-4 w-4" /> 随机布局
+                        </Button>
                     </div>
-                    <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
+                    <div className={`flex ${isVertical && !isMobile ? 'flex-col' : 'flex-col lg:flex-row'} gap-6 md:gap-8`}>
                         <div className="flex-1 flex flex-col">
                             <Textarea
                                 placeholder="请输入文字..."
@@ -237,14 +277,16 @@ const TextToImageGenerator: React.FC = () => {
                                     onClick={handleDownload}
                                     className="huiwen-font bg-black text-white hover:bg-gray-800 rounded-xl text-sm md:text-base py-2 px-4"
                                 >
-                                    下载图片
+                                    <Download className="mr-2 h-4 w-4" /> 下载图片
                                 </Button>
-                                <Button
-                                    onClick={handleCopy}
-                                    className="huiwen-font bg-gray-200 text-black hover:bg-gray-300 rounded-xl text-sm md:text-base py-2 px-4"
-                                >
-                                    <Copy className="mr-2 h-4 w-4" /> 复制图片
-                                </Button>
+                                {!isMobile && (
+                                    <Button
+                                        onClick={handleCopy}
+                                        className="huiwen-font bg-gray-200 text-black hover:bg-gray-300 rounded-xl text-sm md:text-base py-2 px-4"
+                                    >
+                                        <Copy className="mr-2 h-4 w-4" /> 复制图片
+                                    </Button>
+                                )}
                                 <Button
                                     onClick={handleClear}
                                     className="huiwen-font bg-red-500 text-white hover:bg-red-600 rounded-xl text-sm md:text-base py-2 px-4"
@@ -253,8 +295,13 @@ const TextToImageGenerator: React.FC = () => {
                                 </Button>
                             </div>
                         </div>
-                        <div className={`flex-1 flex items-center justify-center ${isVertical ? 'lg:w-2/3 mx-auto' : ''}`} ref={canvasRef}>
-                            <TextPreview text={text} fontsLoaded={fontsLoaded} isVertical={isVertical} />
+                        <div className="flex-1 w-full" ref={canvasRef}>
+                            <TextPreview
+                                text={text}
+                                fontsLoaded={fontsLoaded}
+                                isVertical={isVertical}
+                                randomLayout={randomLayout}
+                            />
                         </div>
                     </div>
                 </CardContent>
