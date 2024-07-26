@@ -32,21 +32,22 @@ const TextToImageGenerator = () => {
     };
 
     return (
-        <div className="min-h-screen bg-white p-16 huiwen-font flex flex-col">
-            <Card className="max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-lg flex-grow">
-                <CardContent className="p-8">
-                    <h1 className="text-3xl font-bold mb-6 text-[#166434]">文字生成图片工具</h1>
-                    <div className="flex flex-col md:flex-row gap-8">
-                        <div className="flex-1">
+        <div className="min-h-screen bg-white p-8 md:p-16 huiwen-font flex flex-col">
+            <Card className="w-full max-w-6xl mx-auto rounded-2xl overflow-hidden shadow-lg flex-grow">
+                <CardContent className="p-6 md:p-8">
+                    <h1 className="text-2xl md:text-3xl font-bold mb-6 text-[#166434]">文字生成图片工具</h1>
+                    <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
+                        <div className="flex-1 flex flex-col">
                             <Textarea
                                 placeholder="请输入文字..."
                                 value={text}
                                 onChange={handleTextChange}
-                                className="w-full h-64 mb-4 huiwen-font rounded-xl"
+                                className="w-full flex-grow mb-4 huiwen-font rounded-xl text-base md:text-lg p-4"
+                                style={{ minHeight: '300px' }}
                             />
                             <Button
                                 onClick={handleDownload}
-                                className="huiwen-font bg-black text-white hover:bg-gray-800 rounded-xl"
+                                className="huiwen-font bg-black text-white hover:bg-gray-800 rounded-xl text-base md:text-lg py-2 px-4"
                             >
                                 下载图片
                             </Button>
@@ -54,7 +55,7 @@ const TextToImageGenerator = () => {
                         <div className="flex-1">
                             <div
                                 ref={canvasRef}
-                                className="bg-gray-100 rounded-2xl p-8 aspect-[1.618] flex flex-col justify-center huiwen-font overflow-hidden"
+                                className="bg-gray-100 rounded-2xl p-6 md:p-8 aspect-[1.618] flex flex-col justify-center huiwen-font overflow-hidden"
                                 style={{ minHeight: '300px' }}
                             >
                                 {text.split('\n\n').map((paragraph, index) => (
