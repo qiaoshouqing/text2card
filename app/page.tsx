@@ -10,10 +10,14 @@ import html2canvas from 'html2canvas';
 
 const defaultText = `放弃向他人证明自己，放弃向自己证明自己。专注忘我地去做你应该做的事情，心无旁骛地去解决问题。当你脚踏实地的走自己的路时，那种拼命想要证明什么的冲动就会越来越少。你也会因此变得轻松、自由。\n\n——查理·芒格`;
 
-const TextPreview = ({ text }) => {
+interface TextPreviewProps {
+    text: string;
+}
+
+const TextPreview: React.FC<TextPreviewProps> = ({ text }) => {
     const getRandomFontSize = () => Math.floor(Math.random() * (36 - 20 + 1) + 20);
 
-    const paragraphStyle = (fontSize) => ({
+    const paragraphStyle = (fontSize: number): React.CSSProperties => ({
         fontSize: `${fontSize}px`,
         lineHeight: '1.5',
         marginBottom: '1rem',
@@ -44,9 +48,9 @@ const TextPreview = ({ text }) => {
     );
 };
 
-const TextToImageGenerator = () => {
-    const [text, setText] = useState(defaultText);
-    const [fontsLoaded, setFontsLoaded] = useState(false);
+const TextToImageGenerator: React.FC = () => {
+    const [text, setText] = useState<string>(defaultText);
+    const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
     const canvasRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -71,12 +75,14 @@ const TextToImageGenerator = () => {
                 useCORS: true,
                 onclone: (clonedDoc) => {
                     const clonedElement = clonedDoc.querySelector('.text-preview');
-                    if (clonedElement) {
+                    if (clonedElement && clonedElement instanceof HTMLElement) {
                         clonedElement.style.borderRadius = '1rem';
                         clonedElement.style.overflow = 'hidden';
                     }
                     Array.from(clonedDoc.getElementsByTagName('p')).forEach(p => {
-                        p.style.whiteSpace = 'pre-wrap';
+                        if (p instanceof HTMLElement) {
+                            p.style.whiteSpace = 'pre-wrap';
+                        }
                     });
                 }
             }).then((canvas) => {
