@@ -9,14 +9,11 @@ import { Switch } from "../components/ui/switch";
 import { Twitter, Globe, Github, Copy, Trash2 } from 'lucide-react';
 import html2canvas from 'html2canvas';
 
-const defaultText = `钉与锤
+const defaultText = `我总是不假思索地在上路， 因为出发的感觉真是太好了
 
-手拿铁锤的人,看什麼都像钉子。
+I was surprised, as always, that how easy it was to leave—how good it felt to be gone, to be on the move, to be someplace where I had never been before and where I was never going to be again.
 
-if the only tool you have is a hammer,
-to treat everything as if it were a nail.
-
-—— 查理·芒格`;
+- John Krakauer, Into the Wild. `;
 
 interface TextPreviewProps {
     text: string;
