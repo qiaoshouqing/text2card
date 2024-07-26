@@ -9,7 +9,14 @@ import { Switch } from "../components/ui/switch";
 import { Twitter, Globe, Github, Copy, Trash2 } from 'lucide-react';
 import html2canvas from 'html2canvas';
 
-const defaultText = `人生得意须尽欢，莫使金樽空对月 \n\n——李白`;
+const defaultText = `钉与锤
+
+手拿铁锤的人,看什麼都像钉子。
+
+if the only tool you have is a hammer,
+to treat everything as if it were a nail.
+
+—— 查理·芒格`;
 
 interface TextPreviewProps {
     text: string;
