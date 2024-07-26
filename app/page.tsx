@@ -68,8 +68,10 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
     }, [text, isVertical, fontsLoaded]);
 
     useEffect(() => {
-        window.addEventListener('resize', checkAndAdjustFontSizes);
-        return () => window.removeEventListener('resize', checkAndAdjustFontSizes);
+        if (typeof window !== 'undefined') {
+            window.addEventListener('resize', checkAndAdjustFontSizes);
+            return () => window.removeEventListener('resize', checkAndAdjustFontSizes);
+        }
     }, []);
 
     return (
@@ -78,7 +80,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
             className="text-preview"
             style={{
                 backgroundColor: '#f3f4f6',
-                borderRadius: window.innerWidth < 768 ? '0.75rem' : '1rem',
+                borderRadius: typeof window === 'undefined' ? '1rem' : window.innerWidth < 768 ? '0.75rem' : '1rem',
                 padding: '2rem',
                 width: '100%',
                 aspectRatio: isVertical ? '1 / 1.618' : '1.618 / 1',
@@ -145,9 +147,13 @@ const TextToImageGenerator: React.FC = () => {
                 useCORS: true,
                 onclone: (clonedDoc) => {
                     const clonedElement = clonedDoc.querySelector('.text-preview');
-                    if (clonedElement && clonedElement instanceof HTMLElement) {
-                        clonedElement.style.borderRadius = window.innerWidth < 768 ? '0.75rem' : '1rem';
-                        clonedElement.style.overflow = 'hidden';
+                    if (typeof window !== 'undefined') {
+                        if (clonedElement && clonedElement instanceof HTMLElement) {
+                            if (typeof window !== 'undefined') {
+                                clonedElement.style.borderRadius = window.innerWidth < 768 ? '0.75rem' : '1rem';
+                                clonedElement.style.overflow = 'hidden';
+                            }
+                        }
                     }
                 }
             }).then((canvas) => {
