@@ -28,7 +28,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
     const [previewSize, setPreviewSize] = useState({ width: 0, height: 0 });
 
     const getRandomFontSize = (baseSize: number) => {
-        return Math.floor(Math.random() * (baseSize * 2 - baseSize / 2 + 1) + baseSize / 2);
+        return Math.floor(Math.random() * (baseSize * 2 - baseSize / 4 + 1) + baseSize / 4);
     };
 
     const regenerateFontSizes = (baseSize: number) => {
@@ -45,7 +45,6 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
         let newFontSizes = regenerateFontSizes(baseFontSize);
         let attempts = 0;
         const maxAttempts = 100;
-
         while (attempts < maxAttempts) {
             contentRef.current.style.fontSize = `${baseFontSize}px`;
             newFontSizes.forEach((size, index) => {
@@ -62,7 +61,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
                 break;
             }
 
-            newFontSizes = newFontSizes.map(size => Math.max(size * 0.9, baseFontSize / 2));
+            newFontSizes = newFontSizes.map(size => Math.max(size * 0.9, baseFontSize / 4));
             attempts++;
         }
 
