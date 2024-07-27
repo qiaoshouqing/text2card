@@ -23,6 +23,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
     const previewRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
     const [fontSizes, setFontSizes] = useState<number[]>([]);
+    const [yPositions, setYPositions] = useState<number[]>([]);
     const [previewSize, setPreviewSize] = useState({ width: 0, height: 0 });
 
     const getRandomFontSize = (baseSize: number) => {
@@ -33,7 +34,31 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
         return text.split('\n\n').map(() => getRandomFontSize(baseSize));
     };
 
-    const checkAndAdjustFontSizes = () => {
+    const generateRandomYPositions = (containerHeight: number, paragraphHeights: number[]) => {
+        const positions: number[] = [];
+        const totalContentHeight = paragraphHeights.reduce((sum, height) => sum + height, 0);
+        const availableSpace = containerHeight - totalContentHeight;
+        const minGap = containerHeight * 0.05; // Minimum gap between paragraphs (5% of container height)
+
+        let currentY = 0;
+        paragraphHeights.forEach((height, index) => {
+            if (index === 0) {
+                positions.push(0); // First paragraph starts at the top
+                currentY = height;
+            } else {
+                const maxOffset = availableSpace / (paragraphHeights.length - 1);
+                let randomOffset = Math.random() * maxOffset;
+                if (randomOffset < minGap) randomOffset = minGap;
+                currentY += randomOffset;
+                positions.push(currentY);
+                currentY += height;
+            }
+        });
+
+        return positions;
+    };
+
+    const checkAndAdjustLayout = () => {
         if (!previewRef.current || !contentRef.current) return;
 
         const containerWidth = previewRef.current.offsetWidth;
@@ -47,20 +72,37 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
         let newFontSizes = regenerateFontSizes(baseFontSize);
         let attempts = 0;
         const maxAttempts = 100;
+
         while (attempts < maxAttempts) {
             contentRef.current.style.fontSize = `${baseFontSize}px`;
+            const paragraphHeights: number[] = [];
+
             newFontSizes.forEach((size, index) => {
                 const paragraph = contentRef.current!.children[index] as HTMLParagraphElement;
                 if (paragraph) {
                     paragraph.style.fontSize = `${size}px`;
+                    paragraph.style.position = 'absolute';
+                    paragraph.style.width = `${containerWidth - totalHorizontalPadding}px`;
+                    paragraphHeights.push(paragraph.offsetHeight);
                 }
             });
 
-            const isOverflowing =
-                contentRef.current.scrollWidth > (containerWidth - totalHorizontalPadding) ||
-                contentRef.current.scrollHeight > (containerHeight - totalVerticalPadding);
+            const newYPositions = generateRandomYPositions(containerHeight - totalVerticalPadding, paragraphHeights);
+
+            let isOverflowing = false;
+            newYPositions.forEach((y, index) => {
+                const paragraph = contentRef.current!.children[index] as HTMLParagraphElement;
+                if (paragraph) {
+                    paragraph.style.top = `${y}px`;
+                    if (y + paragraphHeights[index] > containerHeight - totalVerticalPadding) {
+                        isOverflowing = true;
+                    }
+                }
+            });
 
             if (!isOverflowing) {
+                setFontSizes(newFontSizes);
+                setYPositions(newYPositions);
                 break;
             }
 
@@ -69,10 +111,11 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
         }
 
         if (attempts === maxAttempts) {
-            newFontSizes = newFontSizes.map(() => baseFontSize / 2);
+            const fallbackFontSize = baseFontSize / 2;
+            setFontSizes(newFontSizes.map(() => fallbackFontSize));
+            const fallbackYPositions = text.split('\n\n').map((_, index) => index * (fallbackFontSize * 1.5));
+            setYPositions(fallbackYPositions);
         }
-
-        setFontSizes(newFontSizes);
     };
 
     const updatePreviewSize = () => {
@@ -91,7 +134,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
 
     useEffect(() => {
         if (fontsLoaded) {
-            checkAndAdjustFontSizes();
+            checkAndAdjustLayout();
         }
     }, [text, fontsLoaded, randomLayout, previewSize]);
 
@@ -122,10 +165,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
                     padding: getPadding(),
                     width: '100%',
                     height: `${previewSize.height}px`,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'flex-start',
+                    position: 'relative',
                     overflow: 'hidden',
                 }}
             >
@@ -139,6 +179,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
                         whiteSpace: 'pre-wrap',
                         fontFamily: fontsLoaded ? 'Huiwen_mingchao, sans-serif' : 'sans-serif',
                         overflow: 'hidden',
+                        position: 'relative',
                     }}
                 >
                     {text.split('\n\n').map((paragraph, index) => (
@@ -147,8 +188,12 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
                             style={{
                                 fontSize: `${fontSizes[index] || previewSize.width * 0.04}px`,
                                 lineHeight: '1.5',
-                                marginBottom: `${previewSize.width * 0.02}px`,
+                                marginBottom: 0,
                                 textAlign: 'left',
+                                position: 'absolute',
+                                top: `${yPositions[index] || 0}px`,
+                                left: 0,
+                                width: '100%',
                             }}
                         >
                             {paragraph}
