@@ -242,60 +242,58 @@ const EpicCard: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#EFEEE5] to-[#D7D6CF] p-6 md:p-10 lg:p-16 huiwen-font flex flex-col items-center justify-center">
-            <Card className="w-full max-w-6xl mx-auto rounded-3xl overflow-hidden shadow-2xl bg-white">
-                <CardContent className="p-8 md:p-12 lg:p-16">
-                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-[#166434] text-center">EpicCard Generator</h1>
-                    <p className="text-lg md:text-xl lg:text-2xl text-gray-600 mb-8 italic text-center">"Simplicity is the ultimate sophistication"</p>
-                    <div className="flex flex-col xl:flex-row gap-8 md:gap-12">
-                        <div className="flex-1 flex flex-col">
-                            <Textarea
-                                placeholder="Enter your text here..."
-                                value={text}
-                                onChange={handleTextChange}
-                                className="w-full flex-grow mb-6 huiwen-font rounded-xl text-base md:text-lg lg:text-xl p-4 md:p-6 border-2 border-gray-300 focus:border-[#166434] transition-colors duration-200"
-                                style={{ minHeight: '250px', whiteSpace: 'pre-wrap' }}
-                            />
-                            <div className="flex flex-wrap gap-4 justify-between">
-                                <div className="flex flex-wrap gap-4">
-                                    <Button
-                                        onClick={handleDownload}
-                                        className="huiwen-font bg-[#166434] text-white hover:bg-[#0D4A2C] rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
-                                    >
-                                        <Download className="mr-2 h-5 w-5" /> Download
-                                    </Button>
-                                    {!isMobile && (
-                                        <Button
-                                            onClick={handleCopy}
-                                            className="huiwen-font bg-gray-200 text-black hover:bg-gray-300 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
-                                        >
-                                            <Copy className="mr-2 h-5 w-5" /> Copy
-                                        </Button>
-                                    )}
-                                    <Button
-                                        onClick={handleClear}
-                                        className="huiwen-font bg-red-500 text-white hover:bg-red-600 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
-                                    >
-                                        <Trash2 className="mr-2 h-5 w-5" /> Clear
-                                    </Button>
-                                </div>
+            <div className="w-full max-w-6xl mx-auto">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-[#166434] text-center">EpicCard Generator</h1>
+                <p className="text-lg md:text-xl lg:text-2xl text-gray-600 mb-8 italic text-center">"Simplicity is the ultimate sophistication"</p>
+                <div className="flex flex-col xl:flex-row gap-8 md:gap-12">
+                    <div className="flex-1 flex flex-col">
+                        <Textarea
+                            placeholder="Enter your text here..."
+                            value={text}
+                            onChange={handleTextChange}
+                            className="w-full flex-grow mb-6 huiwen-font rounded-xl text-base md:text-lg lg:text-xl p-4 md:p-6 border-2 border-gray-300 focus:border-[#166434] transition-colors duration-200"
+                            style={{ minHeight: '250px', whiteSpace: 'pre-wrap' }}
+                        />
+                        <div className="flex flex-wrap gap-4 justify-between">
+                            <div className="flex flex-wrap gap-4">
                                 <Button
-                                    onClick={handleRandomLayout}
-                                    className="huiwen-font bg-purple-500 text-white hover:bg-purple-600 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
+                                    onClick={handleDownload}
+                                    className="huiwen-font bg-[#166434] text-white hover:bg-[#0D4A2C] rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
                                 >
-                                    <Shuffle className="mr-2 h-5 w-5" /> Random Layout
+                                    <Download className="mr-2 h-5 w-5" /> Download
+                                </Button>
+                                {!isMobile && (
+                                    <Button
+                                        onClick={handleCopy}
+                                        className="huiwen-font bg-gray-200 text-black hover:bg-gray-300 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
+                                    >
+                                        <Copy className="mr-2 h-5 w-5" /> Copy
+                                    </Button>
+                                )}
+                                <Button
+                                    onClick={handleClear}
+                                    className="huiwen-font bg-red-500 text-white hover:bg-red-600 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
+                                >
+                                    <Trash2 className="mr-2 h-5 w-5" /> Clear
                                 </Button>
                             </div>
-                        </div>
-                        <div className="flex-1 w-full" ref={canvasRef}>
-                            <TextPreview
-                                text={text}
-                                fontsLoaded={fontsLoaded}
-                                randomLayout={randomLayout}
-                            />
+                            <Button
+                                onClick={handleRandomLayout}
+                                className="huiwen-font bg-purple-500 text-white hover:bg-purple-600 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
+                            >
+                                <Shuffle className="mr-2 h-5 w-5" /> Random Layout
+                            </Button>
                         </div>
                     </div>
-                </CardContent>
-            </Card>
+                    <div className="flex-1 w-full" ref={canvasRef}>
+                        <TextPreview
+                            text={text}
+                            fontsLoaded={fontsLoaded}
+                            randomLayout={randomLayout}
+                        />
+                    </div>
+                </div>
+            </div>
             <footer className="mt-12 text-center">
                 <div className="flex justify-center space-x-6 mb-4">
                     <a
