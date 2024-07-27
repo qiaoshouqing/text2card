@@ -1,6 +1,8 @@
 // app/layout.tsx
 import './globals.css'
 import type { Metadata } from 'next'
+import React from "react";
+import GoogleAnalytics from "../lib/goolge-analytics";
 
 export const metadata: Metadata = {
     title: '文字生成图片工具',
@@ -15,6 +17,7 @@ export default function RootLayout({
     return (
         <html lang="zh">
         <body>{children}</body>
+        <GoogleAnalytics/>
         </html>
     )
 }
