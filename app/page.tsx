@@ -42,6 +42,11 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
         const containerHeight = previewRef.current.offsetHeight;
         const baseFontSize = Math.min(containerWidth, containerHeight) * 0.07; // 4% of smaller dimension as base font size
 
+        // Calculate the total padding
+        const innerPadding = containerWidth * 0.06; // 6% of width for inner padding
+        const totalHorizontalPadding = 2 * innerPadding;
+        const totalVerticalPadding = 2 * innerPadding;
+
         let newFontSizes = regenerateFontSizes(baseFontSize);
         let attempts = 0;
         const maxAttempts = 100;
@@ -54,8 +59,9 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
                 }
             });
 
-            const isOverflowing = contentRef.current.scrollWidth > containerWidth ||
-                contentRef.current.scrollHeight > containerHeight;
+            const isOverflowing =
+                contentRef.current.scrollWidth > (containerWidth - totalHorizontalPadding) ||
+                contentRef.current.scrollHeight > (containerHeight - totalVerticalPadding);
 
             if (!isOverflowing) {
                 break;
