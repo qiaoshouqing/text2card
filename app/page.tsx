@@ -6,6 +6,7 @@ import { Textarea } from "../components/ui/textarea";
 import { Button } from "../components/ui/button";
 import { Twitter, Globe, Github, Copy, Trash2, Download, Shuffle } from 'lucide-react';
 import html2canvas from 'html2canvas';
+import { ColorTheme, colorThemes, defaultThemeIndex } from './colorThemes';
 
 const defaultText = `I was surprised, as always, by how easy it was to leave—how good it felt to be gone, to be on the move, to be someplace where I had never been before and where I was never going to be again.
 
@@ -15,9 +16,10 @@ interface TextPreviewProps {
     text: string;
     fontsLoaded: boolean;
     randomLayout: boolean;
+    theme: ColorTheme;
 }
 
-const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayout }) => {
+const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayout, theme }) => {
     const previewRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
     const [fontSizes, setFontSizes] = useState<number[]>([]);
@@ -94,7 +96,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
     }, [text, fontsLoaded, randomLayout, previewSize]);
 
     const getBorderRadius = () => {
-        return `${previewSize.width * 0.05}px`;
+        return `${previewSize.width * 0.03}px`;
     };
 
     const getPadding = () => {
@@ -104,9 +106,9 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
     return (
         <div
             style={{
-                backgroundColor: '#fff',
+                backgroundColor: theme.borderBackground,
                 padding: `${previewSize.width * 0.03}px`,
-                borderRadius: `${previewSize.width * 0.0375}px`,
+                borderRadius: `${previewSize.width * 0.025}px`,
                 width: '100%',
                 boxSizing: 'border-box',
             }}
@@ -115,7 +117,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
                 ref={previewRef}
                 className="text-preview"
                 style={{
-                    backgroundColor: '#f3f4f6',
+                    backgroundColor: theme.cardBackground,
                     borderRadius: getBorderRadius(),
                     padding: getPadding(),
                     width: '100%',
@@ -132,7 +134,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
                     style={{
                         width: '100%',
                         height: '100%',
-                        color: '#166434',
+                        color: theme.textColor,
                         wordBreak: 'break-word',
                         whiteSpace: 'pre-wrap',
                         fontFamily: fontsLoaded ? 'Huiwen_mingchao, sans-serif' : 'sans-serif',
@@ -162,6 +164,7 @@ const EpicCard: React.FC = () => {
     const [text, setText] = useState<string>(defaultText);
     const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
     const [randomLayout, setRandomLayout] = useState<boolean>(false);
+    const [currentTheme, setCurrentTheme] = useState<ColorTheme>(colorThemes[defaultThemeIndex]);
     const canvasRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState<boolean>(false);
 
@@ -243,7 +246,7 @@ const EpicCard: React.FC = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#EFEEE5] to-[#D7D6CF] p-6 md:p-10 lg:p-16 huiwen-font flex flex-col items-center justify-center">
             <div className="w-full max-w-6xl mx-auto">
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-[#166434] text-center">EpicCard Generator</h1>
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-[#166434] text-center" style={{ color: currentTheme.websiteTheme }}>EpicCard Generator</h1>
                 <p className="text-lg md:text-xl lg:text-2xl text-gray-600 mb-8 italic text-center">"Simplicity is the ultimate sophistication"</p>
                 <div className="flex flex-col xl:flex-row gap-8 md:gap-12">
                     <div className="flex-1 flex flex-col">
@@ -252,13 +255,14 @@ const EpicCard: React.FC = () => {
                             value={text}
                             onChange={handleTextChange}
                             className="w-full flex-grow mb-6 huiwen-font rounded-xl text-base md:text-lg lg:text-xl p-4 md:p-6 border-2 border-gray-300 focus:border-[#166434] transition-colors duration-200"
-                            style={{ minHeight: '250px', whiteSpace: 'pre-wrap' }}
+                            style={{ minHeight: '250px', whiteSpace: 'pre-wrap', borderColor: currentTheme.websiteTheme }}
                         />
                         <div className="flex flex-wrap gap-4 justify-between">
                             <div className="flex flex-wrap gap-4">
                                 <Button
                                     onClick={handleDownload}
-                                    className="huiwen-font bg-[#166434] text-white hover:bg-[#0D4A2C] rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
+                                    className="huiwen-font text-white hover:bg-opacity-80 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
+                                    style={{ backgroundColor: currentTheme.websiteTheme }}
                                 >
                                     <Download className="mr-2 h-5 w-5" /> Download
                                 </Button>
@@ -290,6 +294,7 @@ const EpicCard: React.FC = () => {
                             text={text}
                             fontsLoaded={fontsLoaded}
                             randomLayout={randomLayout}
+                            theme={currentTheme}
                         />
                     </div>
                 </div>
