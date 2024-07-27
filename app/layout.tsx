@@ -5,8 +5,8 @@ import React from "react";
 import GoogleAnalytics from "../lib/goolge-analytics";
 
 export const metadata: Metadata = {
-    title: '文字生成图片工具',
-    description: '一个简单的文字生成图片工具',
+    title: 'EpicCard Generator',
+    description: 'A simple tool to generate epic text cards',
 }
 
 export default function RootLayout({
@@ -15,7 +15,7 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="zh">
+        <html lang="en">
         <body>{children}</body>
         <GoogleAnalytics/>
         </html>

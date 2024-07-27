@@ -4,24 +4,20 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent } from "../components/ui/card";
 import { Textarea } from "../components/ui/textarea";
 import { Button } from "../components/ui/button";
-import { Switch } from "../components/ui/switch";
 import { Twitter, Globe, Github, Copy, Trash2, Download, Shuffle } from 'lucide-react';
 import html2canvas from 'html2canvas';
 
-const defaultText = `我总是不假思索地在上路， 因为出发的感觉真是太好了
+const defaultText = `I was surprised, as always, by how easy it was to leave—how good it felt to be gone, to be on the move, to be someplace where I had never been before and where I was never going to be again.
 
-I was surprised, as always, that how easy it was to leave—how good it felt to be gone, to be on the move, to be someplace where I had never been before and where I was never going to be again.
-
-- John Krakauer, Into the Wild. `;
+- John Krakauer, Into the Wild.`;
 
 interface TextPreviewProps {
     text: string;
     fontsLoaded: boolean;
-    isVertical: boolean;
     randomLayout: boolean;
 }
 
-const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical, randomLayout }) => {
+const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayout }) => {
     const previewRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
     const [fontSizes, setFontSizes] = useState<number[]>([]);
@@ -40,10 +36,9 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
 
         const containerWidth = previewRef.current.offsetWidth;
         const containerHeight = previewRef.current.offsetHeight;
-        const baseFontSize = Math.min(containerWidth, containerHeight) * 0.07; // 4% of smaller dimension as base font size
+        const baseFontSize = Math.min(containerWidth, containerHeight) * 0.07;
 
-        // Calculate the total padding
-        const innerPadding = containerWidth * 0.06; // 6% of width for inner padding
+        const innerPadding = containerWidth * 0.06;
         const totalHorizontalPadding = 2 * innerPadding;
         const totalVerticalPadding = 2 * innerPadding;
 
@@ -72,7 +67,6 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
         }
 
         if (attempts === maxAttempts) {
-            // If we've reached max attempts, set all font sizes to the minimum
             newFontSizes = newFontSizes.map(() => baseFontSize / 2);
         }
 
@@ -82,7 +76,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
     const updatePreviewSize = () => {
         if (previewRef.current) {
             const width = previewRef.current.offsetWidth;
-            const height = isVertical ? width * 1.618 : width / 1.618;
+            const height = width / 1.618;
             setPreviewSize({ width, height });
         }
     };
@@ -91,7 +85,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
         updatePreviewSize();
         window.addEventListener('resize', updatePreviewSize);
         return () => window.removeEventListener('resize', updatePreviewSize);
-    }, [isVertical]);
+    }, []);
 
     useEffect(() => {
         if (fontsLoaded) {
@@ -100,19 +94,19 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
     }, [text, fontsLoaded, randomLayout, previewSize]);
 
     const getBorderRadius = () => {
-        return `${previewSize.width * 0.05}px`; // 5% of width
+        return `${previewSize.width * 0.05}px`;
     };
 
     const getPadding = () => {
-        return `${previewSize.width * 0.06}px`; // 6% of width
+        return `${previewSize.width * 0.06}px`;
     };
 
     return (
         <div
             style={{
                 backgroundColor: '#fff',
-                padding: `${previewSize.width * 0.03}px`, // 3% of width
-                borderRadius: `${previewSize.width * 0.0375}px`, // 3.75% of width
+                padding: `${previewSize.width * 0.03}px`,
+                borderRadius: `${previewSize.width * 0.0375}px`,
                 width: '100%',
                 boxSizing: 'border-box',
             }}
@@ -151,7 +145,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
                             style={{
                                 fontSize: `${fontSizes[index] || previewSize.width * 0.04}px`,
                                 lineHeight: '1.5',
-                                marginBottom: `${previewSize.width * 0.02}px`, // 2% of width
+                                marginBottom: `${previewSize.width * 0.02}px`,
                                 textAlign: 'left',
                             }}
                         >
@@ -164,10 +158,9 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, isVertical
     );
 };
 
-const TextToImageGenerator: React.FC = () => {
+const EpicCard: React.FC = () => {
     const [text, setText] = useState<string>(defaultText);
     const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
-    const [isVertical, setIsVertical] = useState<boolean>(false);
     const [randomLayout, setRandomLayout] = useState<boolean>(false);
     const canvasRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -208,7 +201,7 @@ const TextToImageGenerator: React.FC = () => {
                 }
             }).then((canvas) => {
                 const link = document.createElement('a');
-                link.download = 'generated-image.png';
+                link.download = 'epic-card.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             });
@@ -228,10 +221,10 @@ const TextToImageGenerator: React.FC = () => {
                         navigator.clipboard.write([
                             new ClipboardItem({ 'image/png': blob })
                         ]).then(() => {
-                            alert('图片已复制到剪贴板');
+                            alert('Image copied to clipboard');
                         }).catch(err => {
-                            console.error('复制失败:', err);
-                            alert('复制失败，请重试');
+                            console.error('Copy failed:', err);
+                            alert('Copy failed, please try again');
                         });
                     }
                 });
@@ -248,55 +241,48 @@ const TextToImageGenerator: React.FC = () => {
     };
 
     return (
-        <div className={`min-h-screen bg-[#EFEEE5] p-6 md:p-10 lg:p-16 huiwen-font flex flex-col ${isVertical && !isMobile ? 'items-center' : ''}`}>
-            <Card className={`w-full mx-auto rounded-2xl overflow-hidden shadow-lg flex-grow bg-white ${isVertical && !isMobile ? 'max-w-2xl' : ''}`}>
-                <CardContent className="p-6 md:p-8 lg:p-10">
-                    <h1 className="text-2xl md:text-3xl font-bold mb-6 text-[#166434]">文字生成图片工具</h1>
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center space-x-2">
-                            <span>横版</span>
-                            <Switch
-                                checked={isVertical}
-                                onCheckedChange={setIsVertical}
-                            />
-                            <span>竖版</span>
-                        </div>
-                        <Button
-                            onClick={handleRandomLayout}
-                            className="huiwen-font bg-purple-500 text-white hover:bg-purple-600 rounded-xl text-sm md:text-base py-2 px-4"
-                        >
-                            <Shuffle className="mr-2 h-4 w-4" /> 随机布局
-                        </Button>
-                    </div>
-                    <div className={`flex ${isVertical && !isMobile ? 'flex-col' : 'flex-col lg:flex-row'} gap-6 md:gap-8`}>
+        <div className="min-h-screen bg-gradient-to-br from-[#EFEEE5] to-[#D7D6CF] p-6 md:p-10 lg:p-16 huiwen-font flex flex-col items-center justify-center">
+            <Card className="w-full max-w-6xl mx-auto rounded-3xl overflow-hidden shadow-2xl bg-white">
+                <CardContent className="p-8 md:p-12 lg:p-16">
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-[#166434] text-center">EpicCard Generator</h1>
+                    <p className="text-lg md:text-xl lg:text-2xl text-gray-600 mb-8 italic text-center">"Simplicity is the ultimate sophistication"</p>
+                    <div className="flex flex-col xl:flex-row gap-8 md:gap-12">
                         <div className="flex-1 flex flex-col">
                             <Textarea
-                                placeholder="请输入文字..."
+                                placeholder="Enter your text here..."
                                 value={text}
                                 onChange={handleTextChange}
-                                className="w-full flex-grow mb-4 huiwen-font rounded-xl text-sm md:text-base lg:text-lg p-3 md:p-4"
-                                style={{ minHeight: '200px', whiteSpace: 'pre-wrap' }}
+                                className="w-full flex-grow mb-6 huiwen-font rounded-xl text-base md:text-lg lg:text-xl p-4 md:p-6 border-2 border-gray-300 focus:border-[#166434] transition-colors duration-200"
+                                style={{ minHeight: '250px', whiteSpace: 'pre-wrap' }}
                             />
-                            <div className="flex flex-wrap gap-2">
-                                <Button
-                                    onClick={handleDownload}
-                                    className="huiwen-font bg-black text-white hover:bg-gray-800 rounded-xl text-sm md:text-base py-2 px-4"
-                                >
-                                    <Download className="mr-2 h-4 w-4" /> 下载图片
-                                </Button>
-                                {!isMobile && (
+                            <div className="flex flex-wrap gap-4 justify-between">
+                                <div className="flex flex-wrap gap-4">
                                     <Button
-                                        onClick={handleCopy}
-                                        className="huiwen-font bg-gray-200 text-black hover:bg-gray-300 rounded-xl text-sm md:text-base py-2 px-4"
+                                        onClick={handleDownload}
+                                        className="huiwen-font bg-[#166434] text-white hover:bg-[#0D4A2C] rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
                                     >
-                                        <Copy className="mr-2 h-4 w-4" /> 复制图片
+                                        <Download className="mr-2 h-5 w-5" /> Download
                                     </Button>
-                                )}
+                                    {!isMobile && (
+                                        <Button
+                                            onClick={handleCopy}
+                                            className="huiwen-font bg-gray-200 text-black hover:bg-gray-300 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
+                                        >
+                                            <Copy className="mr-2 h-5 w-5" /> Copy
+                                        </Button>
+                                    )}
+                                    <Button
+                                        onClick={handleClear}
+                                        className="huiwen-font bg-red-500 text-white hover:bg-red-600 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
+                                    >
+                                        <Trash2 className="mr-2 h-5 w-5" /> Clear
+                                    </Button>
+                                </div>
                                 <Button
-                                    onClick={handleClear}
-                                    className="huiwen-font bg-red-500 text-white hover:bg-red-600 rounded-xl text-sm md:text-base py-2 px-4"
+                                    onClick={handleRandomLayout}
+                                    className="huiwen-font bg-purple-500 text-white hover:bg-purple-600 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
                                 >
-                                    <Trash2 className="mr-2 h-4 w-4" /> 清空文字
+                                    <Shuffle className="mr-2 h-5 w-5" /> Random Layout
                                 </Button>
                             </div>
                         </div>
@@ -304,15 +290,14 @@ const TextToImageGenerator: React.FC = () => {
                             <TextPreview
                                 text={text}
                                 fontsLoaded={fontsLoaded}
-                                isVertical={isVertical}
                                 randomLayout={randomLayout}
                             />
                         </div>
                     </div>
                 </CardContent>
             </Card>
-            <footer className="mt-8 text-center">
-                <div className="flex justify-center space-x-4">
+            <footer className="mt-12 text-center">
+                <div className="flex justify-center space-x-6 mb-4">
                     <a
                         href="https://x.com/benshandebiao"
                         target="_blank"
@@ -320,7 +305,7 @@ const TextToImageGenerator: React.FC = () => {
                         className="text-gray-600 hover:text-black transition-colors duration-200"
                         aria-label="Twitter profile"
                     >
-                        <Twitter size={20} />
+                        <Twitter size={24} />
                     </a>
                     <a
                         href="https://pomodiary.com/"
@@ -329,7 +314,7 @@ const TextToImageGenerator: React.FC = () => {
                         className="text-gray-600 hover:text-black transition-colors duration-200"
                         aria-label="Official website"
                     >
-                        <Globe size={20} />
+                        <Globe size={24} />
                     </a>
                     <a
                         href="https://github.com/qiaoshouqing/text2card"
@@ -338,13 +323,13 @@ const TextToImageGenerator: React.FC = () => {
                         className="text-gray-600 hover:text-black transition-colors duration-200"
                         aria-label="GitHub repository"
                     >
-                        <Github size={20} />
+                        <Github size={24} />
                     </a>
                 </div>
-                <p className="mt-2 text-xs md:text-sm text-gray-500">© 2024 文字生成图片工具. All rights reserved.</p>
+                <p className="text-sm md:text-base text-gray-500">© 2024 EpicCard Generator. All rights reserved.</p>
             </footer>
         </div>
     );
 };
 
-export default TextToImageGenerator;
+export default EpicCard;
