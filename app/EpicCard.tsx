@@ -10,7 +10,6 @@ import TextPreview from './TextPreview';
 import { Switch } from "../components/ui/switch";
 
 const defaultText = `C'est ça, la vie.
-Time and Tide
 这就是人生
 
 https://card.pomodiary.com/`;
