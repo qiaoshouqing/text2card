@@ -12,7 +12,6 @@ import { Switch } from "../components/ui/switch";
 const defaultText = `C'est ça, la vie.
 Time and Tide
 这就是人生
-朝露の儚さ
 
 https://card.pomodiary.com/`;
 
