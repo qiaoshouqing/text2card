@@ -7,6 +7,7 @@ import { Twitter, Globe, Github, Copy, Trash2, Download, Shuffle } from 'lucide-
 import html2canvas from 'html2canvas';
 import { ColorTheme, colorThemes, defaultThemeIndex } from './colorThemes';
 import TextPreview from './TextPreview';
+import { Switch } from "../components/ui/switch";
 
 const defaultText = `I was surprised, as always, by how easy it was to leave—how good it felt to be gone, to be on the move, to be someplace where I had never been before and where I was never going to be again.
 
@@ -17,6 +18,7 @@ const EpicCard: React.FC = () => {
     const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
     const [randomLayout, setRandomLayout] = useState<boolean>(false);
     const [currentTheme, setCurrentTheme] = useState<ColorTheme>(colorThemes[defaultThemeIndex]);
+    const [isPortraitMode, setIsPortraitMode] = useState<boolean>(false);
     const canvasRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState<boolean>(false);
 
@@ -151,9 +153,13 @@ const EpicCard: React.FC = () => {
         setRandomLayout(prev => !prev);
     };
 
+    const handlePortraitModeToggle = () => {
+        setIsPortraitMode(prev => !prev);
+    };
+
     return (
-        <div className="flex flex-col xl:flex-row gap-8 md:gap-12">
-            <div className="flex-1 flex flex-col">
+        <div className={`flex flex-col xl:flex-row gap-8 md:gap-12 ${isPortraitMode ? 'max-w-3xl mx-auto' : ''}`}>
+            <div className={`flex-1 flex flex-col ${isPortraitMode ? 'xl:w-1/2' : ''}`}>
                 <Textarea
                     placeholder="Enter your text here..."
                     value={text}
@@ -161,7 +167,7 @@ const EpicCard: React.FC = () => {
                     className="w-full flex-grow mb-6 huiwen-font rounded-xl text-base md:text-lg lg:text-xl p-4 md:p-6 border-2 border-gray-300 focus:border-[#166434] transition-colors duration-200"
                     style={{ minHeight: '250px', whiteSpace: 'pre-wrap', borderColor: currentTheme.websiteTheme }}
                 />
-                <div className="flex flex-wrap gap-4 justify-between">
+                <div className="flex flex-wrap gap-4 justify-between mb-4">
                     <div className="flex flex-wrap gap-4">
                         <Button
                             onClick={handleDownload}
@@ -192,13 +198,24 @@ const EpicCard: React.FC = () => {
                         <Shuffle className="mr-2 h-5 w-5" /> Random Layout
                     </Button>
                 </div>
+                <div className="flex items-center gap-2">
+                    <Switch
+                        id="portrait-mode"
+                        checked={isPortraitMode}
+                        onCheckedChange={handlePortraitModeToggle}
+                    />
+                    <label htmlFor="portrait-mode" className="text-sm font-medium">
+                        Portrait Mode
+                    </label>
+                </div>
             </div>
-            <div className="flex-1 w-full" ref={canvasRef}>
+            <div className={`flex-1 w-full ${isPortraitMode ? 'xl:w-1/2' : ''}`} ref={canvasRef}>
                 <TextPreview
                     text={text}
                     fontsLoaded={fontsLoaded}
                     randomLayout={randomLayout}
                     theme={currentTheme}
+                    isPortraitMode={isPortraitMode}
                 />
             </div>
         </div>

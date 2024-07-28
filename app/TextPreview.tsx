@@ -1,14 +1,15 @@
-import React, {useEffect, useRef, useState} from "react";
-import {ColorTheme} from "./colorThemes";
+import React, { useEffect, useRef, useState } from "react";
+import { ColorTheme } from "./colorThemes";
 
 interface TextPreviewProps {
     text: string;
     fontsLoaded: boolean;
     randomLayout: boolean;
     theme: ColorTheme;
+    isPortraitMode: boolean;
 }
 
-const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayout, theme }) => {
+const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayout, theme, isPortraitMode }) => {
     const previewRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
     const [fontSizes, setFontSizes] = useState<number[]>([]);
@@ -59,7 +60,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
         const totalVerticalPadding = 2 * innerPadding;
 
         // Add virtual padding
-        const virtualPadding = containerHeight * 0.05; // 5% of container height for top and bottom
+        const virtualPadding = containerHeight * 0.05;
 
         let newFontSizes = regenerateFontSizes(baseFontSize);
         let attempts = 0;
@@ -115,7 +116,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
     const updatePreviewSize = () => {
         if (previewRef.current) {
             const width = previewRef.current.offsetWidth;
-            const height = width / 1.618;
+            const height = isPortraitMode ? width * 1.414 : width / 1.618; // Use 1.414 (sqrt(2)) for A4 portrait ratio
             setPreviewSize({ width, height });
         }
     };
@@ -124,13 +125,13 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
         updatePreviewSize();
         window.addEventListener('resize', updatePreviewSize);
         return () => window.removeEventListener('resize', updatePreviewSize);
-    }, []);
+    }, [isPortraitMode]);
 
     useEffect(() => {
         if (fontsLoaded) {
             checkAndAdjustLayout();
         }
-    }, [text, fontsLoaded, randomLayout, previewSize]);
+    }, [text, fontsLoaded, randomLayout, previewSize, isPortraitMode]);
 
     const getBorderRadius = () => {
         return `${previewSize.width * 0.03}px`;
