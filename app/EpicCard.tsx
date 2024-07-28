@@ -14,7 +14,7 @@ const defaultText = `C'est ça, la vie.
 Time and Tide
 朝露の儚さ
 
-@SlothCard`;
+https://card.pomodiary.com`;
 
 const EpicCard: React.FC = () => {
     const [text, setText] = useState<string>(defaultText);
