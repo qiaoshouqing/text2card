@@ -38,6 +38,60 @@ const EpicCard: React.FC = () => {
         setText(e.target.value);
     };
 
+    const trimTransparentCanvas = (canvas: HTMLCanvasElement) => {
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return canvas;
+
+        const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const l = pixels.data.length;
+        const bound = {
+            top: null,
+            left: null,
+            right: null,
+            bottom: null
+        };
+
+        for (let i = 0; i < l; i += 4) {
+            if (pixels.data[i + 3] !== 0) {
+                const x = (i / 4) % canvas.width;
+                const y = ~~((i / 4) / canvas.width);
+
+                if (bound.top === null) {
+                    bound.top = y;
+                }
+
+                if (bound.left === null) {
+                    bound.left = x;
+                } else if (x < bound.left) {
+                    bound.left = x;
+                }
+
+                if (bound.right === null) {
+                    bound.right = x;
+                } else if (bound.right < x) {
+                    bound.right = x;
+                }
+
+                if (bound.bottom === null) {
+                    bound.bottom = y;
+                } else if (bound.bottom < y) {
+                    bound.bottom = y;
+                }
+            }
+        }
+
+        const trimHeight = bound.bottom! - bound.top! + 1;
+        const trimWidth = bound.right! - bound.left! + 1;
+        const trimmed = ctx.getImageData(bound.left!, bound.top!, trimWidth, trimHeight);
+
+        const trimmedCanvas = document.createElement('canvas');
+        trimmedCanvas.width = trimWidth;
+        trimmedCanvas.height = trimHeight;
+        trimmedCanvas.getContext('2d')!.putImageData(trimmed, 0, 0);
+
+        return trimmedCanvas;
+    };
+
     const handleDownload = () => {
         if (canvasRef.current) {
             const scale = 2;
@@ -55,9 +109,10 @@ const EpicCard: React.FC = () => {
                     }
                 }
             }).then((canvas) => {
+                const trimmedCanvas = trimTransparentCanvas(canvas);
                 const link = document.createElement('a');
                 link.download = 'epic-card.png';
-                link.href = canvas.toDataURL('image/png');
+                link.href = trimmedCanvas.toDataURL('image/png');
                 link.click();
             });
         }
@@ -71,7 +126,8 @@ const EpicCard: React.FC = () => {
                 logging: false,
                 useCORS: true,
             }).then((canvas) => {
-                canvas.toBlob((blob) => {
+                const trimmedCanvas = trimTransparentCanvas(canvas);
+                trimmedCanvas.toBlob((blob) => {
                     if (blob) {
                         navigator.clipboard.write([
                             new ClipboardItem({ 'image/png': blob })
