@@ -9,9 +9,11 @@ import { ColorTheme, colorThemes, defaultThemeIndex } from './colorThemes';
 import TextPreview from './TextPreview';
 import { Switch } from "../components/ui/switch";
 
-const defaultText = `I was surprised, as always, by how easy it was to leave—how good it felt to be gone, to be on the move, to be someplace where I had never been before and where I was never going to be again.
+const defaultText = `C'est ça, la vie.
+Time and Tide
+朝露の儚さ
 
-- John Krakauer, Into the Wild.`;
+https://card.pomodiary.com/`;
 
 const EpicCard: React.FC = () => {
     const [text, setText] = useState<string>(defaultText);
