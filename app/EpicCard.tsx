@@ -11,8 +11,10 @@ import { Switch } from "../components/ui/switch";
 
 const defaultText = `C'est ça, la vie.
 这就是人生
+Time and Tide
+朝露の儚さ
 
-https://card.pomodiary.com/`;
+@SlothCard`;
 
 const EpicCard: React.FC = () => {
     const [text, setText] = useState<string>(defaultText);
