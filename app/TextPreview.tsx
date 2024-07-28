@@ -23,17 +23,17 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
         return text.split('\n\n').map(() => getRandomFontSize(baseSize));
     };
 
-    const generateRandomYPositions = (containerHeight: number, paragraphHeights: number[]) => {
+    const generateRandomYPositions = (containerHeight: number, paragraphHeights: number[], virtualPadding: number) => {
         const positions: number[] = [];
         const totalContentHeight = paragraphHeights.reduce((sum, height) => sum + height, 0);
-        const availableSpace = containerHeight - totalContentHeight;
+        const availableSpace = containerHeight - totalContentHeight - 2 * virtualPadding;
         const minGap = containerHeight * 0.05; // Minimum gap between paragraphs (5% of container height)
 
-        let currentY = 0;
+        let currentY = virtualPadding; // Start after virtual padding
         paragraphHeights.forEach((height, index) => {
             if (index === 0) {
-                positions.push(0); // First paragraph starts at the top
-                currentY = height;
+                positions.push(currentY); // First paragraph starts after virtual padding
+                currentY += height;
             } else {
                 const maxOffset = availableSpace / (paragraphHeights.length - 1);
                 let randomOffset = Math.random() * maxOffset;
@@ -58,6 +58,9 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
         const totalHorizontalPadding = 2 * innerPadding;
         const totalVerticalPadding = 2 * innerPadding;
 
+        // Add virtual padding
+        const virtualPadding = containerHeight * 0.05; // 5% of container height for top and bottom
+
         let newFontSizes = regenerateFontSizes(baseFontSize);
         let attempts = 0;
         const maxAttempts = 100;
@@ -76,14 +79,14 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
                 }
             });
 
-            const newYPositions = generateRandomYPositions(containerHeight - totalVerticalPadding, paragraphHeights);
+            const newYPositions = generateRandomYPositions(containerHeight - totalVerticalPadding, paragraphHeights, virtualPadding);
 
             let isOverflowing = false;
             newYPositions.forEach((y, index) => {
                 const paragraph = contentRef.current!.children[index] as HTMLParagraphElement;
                 if (paragraph) {
                     paragraph.style.top = `${y}px`;
-                    if (y + paragraphHeights[index] > containerHeight - totalVerticalPadding) {
+                    if (y + paragraphHeights[index] > containerHeight - totalVerticalPadding - virtualPadding) {
                         isOverflowing = true;
                     }
                 }
@@ -102,7 +105,9 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
         if (attempts === maxAttempts) {
             const fallbackFontSize = baseFontSize / 2;
             setFontSizes(newFontSizes.map(() => fallbackFontSize));
-            const fallbackYPositions = text.split('\n\n').map((_, index) => index * (fallbackFontSize * 1.5));
+            const fallbackYPositions = text.split('\n\n').map((_, index) =>
+                virtualPadding + index * (fallbackFontSize * 1.5)
+            );
             setYPositions(fallbackYPositions);
         }
     };
@@ -194,4 +199,4 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
     );
 };
 
-export default TextPreview
+export default TextPreview;
