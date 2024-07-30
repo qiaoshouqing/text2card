@@ -5,8 +5,15 @@ import React from "react";
 import GoogleAnalytics from "../lib/goolge-analytics";
 
 export const metadata: Metadata = {
-    title: 'EpicCard Generator',
-    description: 'A simple tool to generate epic text cards',
+    title: 'SlothCard | Free Online Card Maker for Beautiful Text Cards',
+    description: 'Create stunning text cards effortlessly with SlothCard. The easiest free online card maker for quotes, greetings, and personalized messages. Design at your own pace.',
+    keywords: 'card maker, text card generator, online card creator, free card maker, SlothCard, personalized cards',
+    openGraph: {
+        title: 'SlothCard - Your Go-To Free Online Card Maker',
+        description: 'Design beautiful text cards with SlothCard, the ultimate free card maker for all your creative needs.',
+        type: 'website',
+        url: 'https://card.pomodiary.com',
+    },
 }
 
 export default function RootLayout({
@@ -16,8 +23,10 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-        <body>{children}</body>
+        <body>
+        <main>{children}</main>
         <GoogleAnalytics/>
+        </body>
         </html>
     )
 }

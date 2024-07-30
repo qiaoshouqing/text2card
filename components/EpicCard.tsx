@@ -1,26 +1,36 @@
+// components/EpicCard.tsx
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Textarea } from "../components/ui/textarea";
-import { Button } from "../components/ui/button";
+import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
 import { Twitter, Globe, Github, Copy, Trash2, Download, Shuffle } from 'lucide-react';
 import html2canvas from 'html2canvas';
-import { ColorTheme, colorThemes, defaultThemeIndex } from './colorThemes';
-import TextPreview from './TextPreview';
-import { Switch } from "../components/ui/switch";
+import { ColorTheme, colorThemes, defaultThemeIndex } from '../app/colorThemes';
+import TextPreview from '../app/TextPreview';
+import { Switch } from "./ui/switch";
 
-const defaultText = `C'est ça, la vie.
+const fallbackDefaultText = `SlothCard: Your Card Maker
+C'est ça, la vie.
 这就是人生
 Time and Tide
 朝露の儚さ
 
 https://card.pomodiary.com`;
 
-const EpicCard: React.FC = () => {
+interface EpicCardProps {
+    defaultText?: string;
+    theme?: ColorTheme;
+}
+
+const EpicCard: React.FC<EpicCardProps> = ({
+                                               defaultText = fallbackDefaultText,
+                                               theme = colorThemes[defaultThemeIndex]
+                                           }) => {
     const [text, setText] = useState<string>(defaultText);
     const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
     const [randomLayout, setRandomLayout] = useState<boolean>(false);
-    const [currentTheme, setCurrentTheme] = useState<ColorTheme>(colorThemes[defaultThemeIndex]);
+    const [currentTheme, setCurrentTheme] = useState<ColorTheme>(theme);
     const [isPortraitMode, setIsPortraitMode] = useState<boolean>(false);
     const canvasRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -38,6 +48,10 @@ const EpicCard: React.FC = () => {
         window.addEventListener('resize', checkMobile);
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
+
+    useEffect(() => {
+        setText(defaultText);
+    }, [defaultText]);
 
     const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setText(e.target.value);
@@ -116,7 +130,7 @@ const EpicCard: React.FC = () => {
             }).then((canvas) => {
                 const trimmedCanvas = trimTransparentCanvas(canvas);
                 const link = document.createElement('a');
-                link.download = 'epic-card.png';
+                link.download = 'slothcard.png';
                 link.href = trimmedCanvas.toDataURL('image/png');
                 link.click();
             });
