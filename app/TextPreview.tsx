@@ -82,18 +82,20 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
 
             const newYPositions = generateRandomYPositions(containerHeight - totalVerticalPadding, paragraphHeights, virtualPadding);
 
-            let isOverflowing = false;
-            newYPositions.forEach((y, index) => {
-                const paragraph = contentRef.current!.children[index] as HTMLParagraphElement;
-                if (paragraph) {
-                    paragraph.style.top = `${y}px`;
-                    if (y + paragraphHeights[index] > containerHeight - totalVerticalPadding - virtualPadding) {
-                        isOverflowing = true;
+            let isOverlapping = false;
+            for (let i = 0; i < newYPositions.length; i++) {
+                for (let j = i + 1; j < newYPositions.length; j++) {
+                    if (Math.abs(newYPositions[i] - newYPositions[j]) < Math.max(paragraphHeights[i], paragraphHeights[j])) {
+                        isOverlapping = true;
+                        break;
                     }
                 }
-            });
+                if (isOverlapping) break;
+            }
 
-            if (!isOverflowing) {
+            let isOverflowing = newYPositions[newYPositions.length - 1] + paragraphHeights[paragraphHeights.length - 1] > containerHeight - totalVerticalPadding - virtualPadding;
+
+            if (!isOverlapping && !isOverflowing) {
                 setFontSizes(newFontSizes);
                 setYPositions(newYPositions);
                 break;
@@ -128,10 +130,8 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
     }, [isPortraitMode]);
 
     useEffect(() => {
-        if (fontsLoaded) {
-            checkAndAdjustLayout();
-        }
-    }, [text, fontsLoaded, randomLayout, previewSize, isPortraitMode]);
+        checkAndAdjustLayout();
+    }, [text, randomLayout, previewSize, isPortraitMode]);
 
     const getBorderRadius = () => {
         return `${previewSize.width * 0.03}px`;
