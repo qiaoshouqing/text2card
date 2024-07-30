@@ -10,13 +10,13 @@ import { ColorTheme, colorThemes, defaultThemeIndex } from '../app/colorThemes';
 import TextPreview from '../app/TextPreview';
 import { Switch } from "./ui/switch";
 
-const fallbackDefaultText = `SlothCard: Your Card Maker
+const fallbackDefaultText = `
 C'est ça, la vie.
 这就是人生
 Time and Tide
 朝露の儚さ
 
-https://card.pomodiary.com`;
+@SlothCard`;
 
 interface EpicCardProps {
     defaultText?: string;
