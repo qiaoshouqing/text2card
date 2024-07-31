@@ -23,11 +23,14 @@ const morningTheme: ColorTheme = {
 const defaultMorningText = `Good Morning!
 ☀️🌞🌻
 
+
 Embrace the new day with a smile.
 May your day be filled with 
 positivity, success, and joy!
 
+
 Rise and shine!
+
 
 #GoodMorning #DailyInspiration`;
 

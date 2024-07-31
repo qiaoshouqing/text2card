@@ -11,11 +11,11 @@ const FAQ: React.FC = () => (
             />
             <FAQItem
                 question="How does the SlothCard card maker generate random layouts?"
-                answer="Our card maker uses a combination of AI algorithms and design principles to create random layouts. It considers factors like text length, paragraph breaks, and overall balance to generate visually appealing designs. The magic happens when you add empty lines between paragraphs in your input text – this triggers our system to create new, unexpected layout variations."
+                answer="Our card maker uses a combination of AI algorithms and design principles to create random layouts. It considers factors like text length, paragraph breaks, and overall balance to generate visually appealing designs. The magic happens when you add two empty lines between paragraphs in your input text – this triggers our system to create new, unexpected layout variations."
             />
             <FAQItem
                 question="Can I have some control over the randomness in my card designs?"
-                answer="Absolutely! While our card maker thrives on randomness, you can influence the outcome. By adjusting your text input, adding or removing line breaks, you can guide the direction of the design. It's a perfect balance of unexpected creativity and user control."
+                answer="Absolutely! While our card maker thrives on randomness, you can influence the outcome. By adjusting your text input, adding or removing double line breaks, you can guide the direction of the design. It's a perfect balance of unexpected creativity and user control."
             />
             <FAQItem
                 question="What makes SlothCard the best card maker for beginners?"
@@ -23,7 +23,7 @@ const FAQ: React.FC = () => (
             />
             <FAQItem
                 question="Can I create cards with consistent paragraph sizes using your card maker?"
-                answer="Yes, our card maker allows you to maintain consistent paragraph sizes if desired. While we encourage embracing the randomness, we understand some projects need uniformity. To keep paragraphs the same size, simply add a space in the empty line between paragraphs when creating your card. This gives you the flexibility to balance between random creativity and structured design."
+                answer="Yes, our card maker allows you to maintain consistent paragraph sizes if desired. While we encourage embracing the randomness, we understand some projects need uniformity. To keep paragraphs the same size, simply use single line breaks between paragraphs when creating your card. For new layout variations, use double line breaks. This gives you the flexibility to balance between random creativity and structured design."
             />
             <FAQItem
                 question="How often does SlothCard update its design algorithms?"

@@ -7,16 +7,23 @@ import { Button } from "./ui/button";
 import { Twitter, Globe, Github, Copy, Trash2, Download, Shuffle } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { ColorTheme, colorThemes, defaultThemeIndex } from '../app/colorThemes';
-import TextPreview from '../app/TextPreview';
+import TextPreview from './TextPreview';
 import { Switch } from "./ui/switch";
 
 const fallbackDefaultText = `
-C'est ça, la vie.
-这就是人生
-Time and Tide
-朝露の儚さ
+Good Morning!
+☀️🌞🌻
 
-@SlothCard`;
+
+Embrace the new day with a smile.
+May your day be filled with 
+positivity, success, and joy!
+
+
+Rise and shine!
+
+
+#GoodMorning #DailyInspiration`;
 
 interface EpicCardProps {
     defaultText?: string;

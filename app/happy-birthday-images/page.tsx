@@ -23,10 +23,13 @@ const birthdayTheme: ColorTheme = {
 const defaultBirthdayText = `Happy Birthday!
 🎉🎂🎈
 
+
 Wishing you a day filled with 
 joy, laughter, and wonderful surprises.
 
+
 May all your dreams come true!
+
 
 #CelebrateLife #HappyBirthday`;
 

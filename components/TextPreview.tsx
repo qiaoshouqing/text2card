@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ColorTheme } from "./colorThemes";
+import { ColorTheme } from "../app/colorThemes";
 
 interface TextPreviewProps {
     text: string;
@@ -21,7 +21,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
     };
 
     const regenerateFontSizes = (baseSize: number) => {
-        return text.split('\n\n').map(() => getRandomFontSize(baseSize));
+        return text.split('\n\n\n').map(() => getRandomFontSize(baseSize));
     };
 
     const generateRandomYPositions = (containerHeight: number, paragraphHeights: number[], virtualPadding: number) => {
@@ -108,7 +108,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
         if (attempts === maxAttempts) {
             const fallbackFontSize = baseFontSize / 2;
             setFontSizes(newFontSizes.map(() => fallbackFontSize));
-            const fallbackYPositions = text.split('\n\n').map((_, index) =>
+            const fallbackYPositions = text.split('\n\n\n').map((_, index) =>
                 virtualPadding + index * (fallbackFontSize * 1.5)
             );
             setYPositions(fallbackYPositions);
@@ -177,7 +177,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
                         position: 'relative',
                     }}
                 >
-                    {text.split('\n\n').map((paragraph, index) => (
+                    {text.split('\n\n\n').map((paragraph, index) => (
                         <p
                             key={index}
                             style={{
