@@ -17,7 +17,8 @@ const birthdayTheme: ColorTheme = {
     websiteTheme: "#FF69B4",
     textColor: "#FF1493",
     cardBackground: "#FFF0F5",
-    borderBackground: "#FFB6C1"
+    borderBackground: "#FFB6C1",
+    titleColor: "#FF1493",
 };
 
 const defaultBirthdayText = `Happy Birthday!

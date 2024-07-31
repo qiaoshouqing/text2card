@@ -3,7 +3,7 @@ import React from 'react';
 
 const Features: React.FC = () => (
     <section className="w-full max-w-4xl mx-auto">
-        <h2 className="text-2xl md:text-3xl font-bold mb-12 text-[#013365] text-center">Why Choose SlothCard Card Maker?</h2>
+        <h2 className="text-2xl md:text-3xl font-bold mb-12 text-[#013365] text-center">Why Choose Text2Card Card Maker?</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <FeatureCard
                 title="Embrace Random Creativity"

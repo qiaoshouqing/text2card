@@ -11,19 +11,13 @@ import TextPreview from './TextPreview';
 import { Switch } from "./ui/switch";
 
 const fallbackDefaultText = `
-Good Morning!
-☀️🌞🌻
+I was surprised, as always, that how easy it was to leave—how good it felt to be gone, to be on the move, to be someplace where I had never been before and where I was never going to be again.
 
 
-Embrace the new day with a smile.
-May your day be filled with 
-positivity, success, and joy!
+我总是不假思索地在上路，因为出发的感觉真是太好了，世界突然充满了可能性。
 
 
-Rise and shine!
-
-
-#GoodMorning #DailyInspiration`;
+- John Krakauer, Into the Wild.`;
 
 interface EpicCardProps {
     defaultText?: string;
@@ -137,7 +131,7 @@ const EpicCard: React.FC<EpicCardProps> = ({
             }).then((canvas) => {
                 const trimmedCanvas = trimTransparentCanvas(canvas);
                 const link = document.createElement('a');
-                link.download = 'slothcard.png';
+                link.download = 'Text2Card.png';
                 link.href = trimmedCanvas.toDataURL('image/png');
                 link.click();
             });

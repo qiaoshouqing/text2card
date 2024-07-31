@@ -17,7 +17,8 @@ const morningTheme: ColorTheme = {
     websiteTheme: "#4682B4",
     textColor: "#1E90FF",
     cardBackground: "#F0F8FF",
-    borderBackground: "#87CEEB"
+    borderBackground: "#87CEEB",
+    titleColor: "#1E90FF",
 };
 
 const defaultMorningText = `Good Morning!
