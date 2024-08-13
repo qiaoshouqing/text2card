@@ -19,8 +19,8 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ themes, currentTheme, onT
                     }`}
                     style={{
                         backgroundColor: theme.websiteTheme,
-                        ringColor: theme.borderBackground,
-                    }}
+                        '--ring-color': theme.borderBackground,
+                    } as React.CSSProperties}
                     onClick={() => onThemeChange(theme)}
                     title={theme.name}
                 >
