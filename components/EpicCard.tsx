@@ -182,7 +182,7 @@ const EpicCard: React.FC<EpicCardProps> = ({
 
     return (
         <div className="flex flex-col gap-4">
-            <div className={`flex flex-col xl:flex-row gap-8 md:gap-12 ${isPortraitMode ? 'max-w-3xl mx-auto' : ''}`}>
+            <div className={`flex flex-col xl:flex-row gap-8 md:gap-12 ${isPortraitMode ? 'max-w-4xl mx-auto' : ''}`}>
                 <div className={`flex-1 flex flex-col ${isPortraitMode ? 'xl:w-1/2' : ''}`}>
                     <div className="flex justify-between items-center mb-4">
                         <ThemeSelector
