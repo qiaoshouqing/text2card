@@ -118,7 +118,7 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
     const updatePreviewSize = () => {
         if (previewRef.current) {
             const width = previewRef.current.offsetWidth;
-            const height = isPortraitMode ? width * 1.414 : width / 1.618; // Use 1.414 (sqrt(2)) for A4 portrait ratio
+            const height = isPortraitMode ? width * 1.414 : width / 1.618;
             setPreviewSize({ width, height });
         }
     };

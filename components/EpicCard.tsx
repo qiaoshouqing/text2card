@@ -4,10 +4,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
-import { Twitter, Globe, Github, Copy, Trash2, Download, Shuffle } from 'lucide-react';
+import { Download, Copy, Trash2, Shuffle } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { ColorTheme, colorThemes, defaultThemeIndex } from '../app/colorThemes';
 import TextPreview from './TextPreview';
+import ThemeSelector from './ThemeSelector';
 import { Switch } from "./ui/switch";
 
 const fallbackDefaultText = `
@@ -175,66 +176,79 @@ const EpicCard: React.FC<EpicCardProps> = ({
         setIsPortraitMode(prev => !prev);
     };
 
+    const handleThemeChange = (newTheme: ColorTheme) => {
+        setCurrentTheme(newTheme);
+    };
+
     return (
-        <div className={`flex flex-col xl:flex-row gap-8 md:gap-12 ${isPortraitMode ? 'max-w-3xl mx-auto' : ''}`}>
-            <div className={`flex-1 flex flex-col ${isPortraitMode ? 'xl:w-1/2' : ''}`}>
-                <Textarea
-                    placeholder="Enter your text here..."
-                    value={text}
-                    onChange={handleTextChange}
-                    className="w-full flex-grow mb-6 huiwen-font rounded-xl text-base md:text-lg lg:text-xl p-4 md:p-6 border-2 border-gray-300 focus:border-[#166434] transition-colors duration-200"
-                    style={{ minHeight: '250px', whiteSpace: 'pre-wrap', borderColor: currentTheme.websiteTheme }}
-                />
-                <div className="flex flex-wrap gap-4 justify-between mb-4">
-                    <div className="flex flex-wrap gap-4">
-                        <Button
-                            onClick={handleDownload}
-                            className="huiwen-font text-white hover:bg-opacity-80 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
-                            style={{ backgroundColor: currentTheme.websiteTheme }}
-                        >
-                            <Download className="mr-2 h-5 w-5" /> Download
-                        </Button>
-                        {!isMobile && (
+        <div className="flex flex-col gap-4">
+            <div className={`flex flex-col xl:flex-row gap-8 md:gap-12 ${isPortraitMode ? 'max-w-3xl mx-auto' : ''}`}>
+                <div className={`flex-1 flex flex-col ${isPortraitMode ? 'xl:w-1/2' : ''}`}>
+                    <div className="flex justify-between items-center mb-4">
+                        <ThemeSelector
+                            themes={colorThemes}
+                            currentTheme={currentTheme}
+                            onThemeChange={handleThemeChange}
+                        />
+                        <div className="flex items-center gap-2">
+                            <Switch
+                                id="portrait-mode"
+                                checked={isPortraitMode}
+                                onCheckedChange={handlePortraitModeToggle}
+                            />
+                            <label htmlFor="portrait-mode" className="text-sm font-medium">
+                                Portrait Mode
+                            </label>
+                        </div>
+                    </div>
+                    <Textarea
+                        placeholder="Enter your text here..."
+                        value={text}
+                        onChange={handleTextChange}
+                        className="w-full flex-grow mb-6 huiwen-font rounded-xl text-base md:text-lg lg:text-xl p-4 md:p-6 border-2 border-gray-300 focus:border-[#166434] transition-colors duration-200"
+                        style={{ minHeight: '250px', whiteSpace: 'pre-wrap', borderColor: currentTheme.websiteTheme }}
+                    />
+                    <div className="flex flex-wrap gap-4 justify-between mb-4">
+                        <div className="flex flex-wrap gap-4">
                             <Button
-                                onClick={handleCopy}
-                                className="huiwen-font bg-gray-200 text-black hover:bg-gray-300 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
+                                onClick={handleDownload}
+                                className="huiwen-font text-white hover:bg-opacity-80 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
+                                style={{ backgroundColor: currentTheme.websiteTheme }}
                             >
-                                <Copy className="mr-2 h-5 w-5" /> Copy
+                                <Download className="mr-2 h-5 w-5" /> Download
                             </Button>
-                        )}
+                            {!isMobile && (
+                                <Button
+                                    onClick={handleCopy}
+                                    className="huiwen-font bg-gray-200 text-black hover:bg-gray-300 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
+                                >
+                                    <Copy className="mr-2 h-5 w-5" /> Copy
+                                </Button>
+                            )}
+                            <Button
+                                onClick={handleClear}
+                                className="huiwen-font bg-red-500 text-white hover:bg-red-600 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
+                            >
+                                <Trash2 className="mr-2 h-5 w-5" /> Clear
+                            </Button>
+                        </div>
                         <Button
-                            onClick={handleClear}
-                            className="huiwen-font bg-red-500 text-white hover:bg-red-600 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
+                            onClick={handleRandomLayout}
+                            className="huiwen-font bg-purple-500 text-white hover:bg-purple-600 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
                         >
-                            <Trash2 className="mr-2 h-5 w-5" /> Clear
+                            <Shuffle className="mr-2 h-5 w-5" /> Random Layout
                         </Button>
                     </div>
-                    <Button
-                        onClick={handleRandomLayout}
-                        className="huiwen-font bg-purple-500 text-white hover:bg-purple-600 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
-                    >
-                        <Shuffle className="mr-2 h-5 w-5" /> Random Layout
-                    </Button>
                 </div>
-                <div className="flex items-center gap-2">
-                    <Switch
-                        id="portrait-mode"
-                        checked={isPortraitMode}
-                        onCheckedChange={handlePortraitModeToggle}
+                <div className={`flex-1 w-full ${isPortraitMode ? 'xl:w-1/2' : ''}`} ref={canvasRef}>
+                    <TextPreview
+                        text={text}
+                        fontsLoaded={fontsLoaded}
+                        randomLayout={randomLayout}
+                        theme={currentTheme}
+                        isPortraitMode={isPortraitMode}
                     />
-                    <label htmlFor="portrait-mode" className="text-sm font-medium">
-                        Portrait Mode
-                    </label>
                 </div>
-            </div>
-            <div className={`flex-1 w-full ${isPortraitMode ? 'xl:w-1/2' : ''}`} ref={canvasRef}>
-                <TextPreview
-                    text={text}
-                    fontsLoaded={fontsLoaded}
-                    randomLayout={randomLayout}
-                    theme={currentTheme}
-                    isPortraitMode={isPortraitMode}
-                />
             </div>
         </div>
     );

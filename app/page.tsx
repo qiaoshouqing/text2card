@@ -1,4 +1,3 @@
-// pages/index.tsx
 import React from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
@@ -7,7 +6,6 @@ import Features from '../components/Features';
 import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
 
-// 动态导入 EpicCard 组件，禁用 SSR
 const EpicCard = dynamic(() => import('../components/EpicCard'), { ssr: false });
 
 export const metadata: Metadata = {
@@ -18,21 +16,21 @@ export const metadata: Metadata = {
 
 const Page: React.FC = () => {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-[#F2EDE4] to-[#D6CCC2] p-6 md:p-10 lg:p-16 flex flex-col items-center justify-center">
+        <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 p-6 md:p-10 lg:p-16 flex flex-col items-center justify-center">
             <div className="w-full max-w-6xl mx-auto">
                 <header className="text-center mb-8">
-                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-[#49392C]">Text2Card: Your Ultimate Card Maker</h1>
-                    <p className="text-lg md:text-xl lg:text-2xl text-[#5E503F] mb-4 italic">"The easiest card maker for your thoughts and quotes"</p>
-                    <p className="text-[#2C2823]">Create stunning cards effortlessly with our intuitive card maker. Perfect for social media, presentations, and personal use.</p>
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-gray-800">Text2Card: Your Ultimate Card Maker</h1>
+                    <p className="text-lg md:text-xl lg:text-2xl text-gray-600 mb-4 italic">"The easiest card maker for your thoughts and quotes"</p>
+                    <p className="text-gray-700">Create stunning cards effortlessly with our intuitive card maker. Perfect for social media, presentations, and personal use.</p>
                 </header>
                 <main className="space-y-24">
                     <section className="text-center mt-16">
-                        <h2 className="text-2xl md:text-3xl font-bold mb-8 text-[#49392C]">Create Your Card Now</h2>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-8 text-gray-800">Create Your Card Now</h2>
                         <EpicCard />
                     </section>
 
                     <section className="text-center">
-                        <h2 className="text-2xl md:text-3xl font-bold mb-8 text-[#49392C]">Specialized Card Makers</h2>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-8 text-gray-800">Specialized Card Makers</h2>
                         <div className="grid md:grid-cols-2 gap-8">
                             <SpecializedCardLink
                                 href="/happy-birthday-images"
