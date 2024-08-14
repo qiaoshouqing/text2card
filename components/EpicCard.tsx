@@ -4,7 +4,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
-import { Download, Copy, Trash2, Shuffle } from 'lucide-react';
+import { Download, Copy, Trash2, Shuffle, Smartphone } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { ColorTheme, colorThemes, defaultThemeIndex } from '../app/colorThemes';
 import TextPreview from './TextPreview';
@@ -190,16 +190,6 @@ const EpicCard: React.FC<EpicCardProps> = ({
                             currentTheme={currentTheme}
                             onThemeChange={handleThemeChange}
                         />
-                        <div className="flex items-center gap-2">
-                            <Switch
-                                id="portrait-mode"
-                                checked={isPortraitMode}
-                                onCheckedChange={handlePortraitModeToggle}
-                            />
-                            <label htmlFor="portrait-mode" className="text-sm font-medium">
-                                Portrait Mode
-                            </label>
-                        </div>
                     </div>
                     <Textarea
                         placeholder="Enter your text here..."
@@ -231,13 +221,26 @@ const EpicCard: React.FC<EpicCardProps> = ({
                             >
                                 <Trash2 className="mr-2 h-5 w-5" /> Clear
                             </Button>
+                            <Button
+                                onClick={handleRandomLayout}
+                                className="huiwen-font bg-purple-500 text-white hover:bg-purple-600 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
+                            >
+                                <Shuffle className="mr-2 h-5 w-5" /> Random Layout
+                            </Button>
+                            <Button
+                                onClick={handlePortraitModeToggle}
+                                className={`huiwen-font text-white rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200 flex items-center ${isPortraitMode ? 'bg-green-500 hover:bg-green-600' : 'bg-blue-500 hover:bg-blue-600'}`}
+                            >
+                                <Smartphone className="mr-2 h-5 w-5" />
+                                <span className="mr-2">{isPortraitMode ? 'Portrait' : 'Landscape'}</span>
+                                <Switch
+                                    id="portrait-mode"
+                                    checked={isPortraitMode}
+                                    onCheckedChange={handlePortraitModeToggle}
+                                    className="scale-75"
+                                />
+                            </Button>
                         </div>
-                        <Button
-                            onClick={handleRandomLayout}
-                            className="huiwen-font bg-purple-500 text-white hover:bg-purple-600 rounded-xl text-sm md:text-base py-3 px-6 transition-colors duration-200"
-                        >
-                            <Shuffle className="mr-2 h-5 w-5" /> Random Layout
-                        </Button>
                     </div>
                 </div>
                 <div className={`flex-1 w-full ${isPortraitMode ? 'xl:w-1/2' : ''}`} ref={canvasRef}>
