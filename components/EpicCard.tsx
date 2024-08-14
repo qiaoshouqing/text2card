@@ -115,8 +115,8 @@ const EpicCard: React.FC<EpicCardProps> = ({
 
     const handleDownload = () => {
         if (canvasRef.current) {
-            const scale = 2;
             const element = canvasRef.current;
+            const scale = isMobile ? 4 : 2; // Increase scale for mobile devices
 
             html2canvas(element, {
                 backgroundColor: null,
@@ -131,9 +131,11 @@ const EpicCard: React.FC<EpicCardProps> = ({
                 }
             }).then((canvas) => {
                 const trimmedCanvas = trimTransparentCanvas(canvas);
+
+                // Convert to a higher quality PNG
                 const link = document.createElement('a');
                 link.download = 'Text2Card.png';
-                link.href = trimmedCanvas.toDataURL('image/png');
+                link.href = trimmedCanvas.toDataURL('image/png', 1.0); // Use maximum quality
                 link.click();
             });
         }
