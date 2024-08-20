@@ -16,6 +16,13 @@ const Footer: React.FC = () => (
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </SocialLink>
         </div>
+        <div className="mt-6">
+            <h3 className="text-sm font-semibold text-gray-600 mb-2">Friendly Links</h3>
+            <div className="flex flex-wrap justify-center gap-4">
+                <FriendlyLink href="https://www.essaysloth.com/" text="EssaySloth" />
+                <FriendlyLink href="https://pomodiary.com/" text="PomoDiary" />
+            </div>
+        </div>
     </footer>
 );
 
@@ -25,6 +32,12 @@ const SocialLink: React.FC<{ href: string; ariaLabel: string; children: React.Re
             {children}
         </svg>
         <span className="sr-only">{ariaLabel}</span>
+    </a>
+);
+
+const FriendlyLink: React.FC<{ href: string; text: string }> = ({ href, text }) => (
+    <a href={href} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-500 hover:text-blue-700 hover:underline">
+        {text}
     </a>
 );
 
