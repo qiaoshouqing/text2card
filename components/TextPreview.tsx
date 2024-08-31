@@ -143,52 +143,38 @@ const TextPreview: React.FC<TextPreviewProps> = ({ text, fontsLoaded, randomLayo
 
     return (
         <div
+            className="w-full box-border"
             style={{
                 backgroundColor: theme.borderBackground,
                 padding: `${previewSize.width * 0.03}px`,
                 borderRadius: `${previewSize.width * 0.025}px`,
-                width: '100%',
-                boxSizing: 'border-box',
             }}
         >
             <div
                 ref={previewRef}
-                className="text-preview"
+                className="text-preview w-full relative overflow-hidden"
                 style={{
                     backgroundColor: theme.cardBackground,
                     borderRadius: getBorderRadius(),
                     padding: getPadding(),
-                    width: '100%',
                     height: `${previewSize.height}px`,
-                    position: 'relative',
-                    overflow: 'hidden',
                 }}
             >
                 <div
                     ref={contentRef}
+                    className="relative w-full h-full break-words whitespace-pre-wrap overflow-hidden"
                     style={{
-                        width: '100%',
-                        height: '100%',
                         color: theme.textColor,
-                        wordBreak: 'break-word',
-                        whiteSpace: 'pre-wrap',
                         fontFamily: fontsLoaded ? 'Huiwen_mingchao, sans-serif' : 'sans-serif',
-                        overflow: 'hidden',
-                        position: 'relative',
                     }}
                 >
                     {text.split('\n\n\n').map((paragraph, index) => (
                         <p
                             key={index}
+                            className="absolute w-full left-0 text-left mb-0 leading-normal"
                             style={{
                                 fontSize: `${fontSizes[index] || previewSize.width * 0.04}px`,
-                                lineHeight: '1.5',
-                                marginBottom: 0,
-                                textAlign: 'left',
-                                position: 'absolute',
                                 top: `${yPositions[index] || 0}px`,
-                                left: 0,
-                                width: '100%',
                             }}
                         >
                             {paragraph}
