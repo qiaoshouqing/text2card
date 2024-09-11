@@ -3,9 +3,8 @@ import React from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import EpicCard from '../../components/EpicCard';
-import { ColorTheme } from '../../app/colorThemes';
 import Footer from "../../components/Footer";
-
+import { ColorTheme, colorThemes } from '../../app/colorThemes';
 export const metadata: Metadata = {
     title: 'Create Stunning Happy Birthday Images | Free Birthday Card Maker',
     description: 'Design beautiful and personalized happy birthday images with our free online card maker. Perfect for social media, e-cards, and heartfelt birthday wishes.',
@@ -51,7 +50,7 @@ export default function HappyBirthdayPage() {
                     Craft unforgettable birthday wishes with our easy-to-use card maker. Spread joy and celebrate life!
                 </p>
 
-                <EpicCard defaultText={defaultBirthdayText} theme={birthdayTheme} />
+                <EpicCard defaultText={defaultBirthdayText} theme={colorThemes[9]} />
 
                 <Features />
                 <FAQ />

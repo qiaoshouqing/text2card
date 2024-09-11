@@ -82,6 +82,22 @@ const colorThemes: ColorTheme[] = [
         borderBackground: "#FFA07A",
         titleColor: "#FF7F50"
     },
+    {
+        name: "Birthday Celebration",
+        websiteTheme: "#FF69B4",
+        textColor: "#FF1493",
+        cardBackground: "#FFF0F5",
+        borderBackground: "#FFB6C1",
+        titleColor: "#FF1493"
+    },
+    {
+        name: "Inspiring Wisdom",
+        websiteTheme: "#4B0082",
+        textColor: "#8A2BE2",
+        cardBackground: "#E6E6FA",
+        borderBackground: "#9370DB",
+        titleColor: "#4B0082"
+    }
 ];
 
 // 默认主题索引

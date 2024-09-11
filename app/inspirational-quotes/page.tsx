@@ -5,7 +5,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import EpicCard from '../../components/EpicCard';
-import { ColorTheme } from '../../app/colorThemes';
+import { ColorTheme, colorThemes } from '../../app/colorThemes';
 import Footer from "../../components/Footer";
 
 const inspirationalTheme: ColorTheme = {
@@ -423,7 +423,7 @@ export default function InspirationalQuotesPage() {
                     Craft beautiful inspirational quotes to motivate yourself and others. Spread wisdom and positivity!
                 </p>
 
-                <EpicCard defaultText={currentQuote} theme={inspirationalTheme} />
+                <EpicCard defaultText={currentQuote} theme={colorThemes[10]} />
 
                 <div className="mt-8 text-center">
                     <button
