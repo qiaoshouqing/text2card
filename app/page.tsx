@@ -39,12 +39,21 @@ const Page: React.FC = () => {
                                 bgColor="bg-pink-100"
                                 textColor="text-pink-600"
                             />
+
                             <SpecializedCardLink
                                 href="/good-morning-images"
                                 title="Good Morning Card Maker"
                                 description="Design beautiful morning greeting cards"
                                 bgColor="bg-blue-100"
                                 textColor="text-blue-600"
+                            />
+
+                            <SpecializedCardLink
+                                href="/inspirational-quotes"
+                                title="Inspirational Quote Maker"
+                                description="Craft motivating and inspiring quote images"
+                                bgColor="bg-purple-100"
+                                textColor="text-purple-600"
                             />
                         </div>
                     </section>
