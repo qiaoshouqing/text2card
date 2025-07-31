@@ -52,8 +52,8 @@ const Page: React.FC = () => {
                                 href="/inspirational-quotes"
                                 title="Inspirational Quote Maker"
                                 description="Craft motivating and inspiring quote images"
-                                bgColor="bg-purple-100"
-                                textColor="text-purple-600"
+                                bgColor="bg-blue-100"
+                                textColor="text-blue-600"
                             />
                         </div>
                     </section>

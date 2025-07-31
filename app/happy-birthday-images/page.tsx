@@ -50,7 +50,7 @@ export default function HappyBirthdayPage() {
                     Craft unforgettable birthday wishes with our easy-to-use card maker. Spread joy and celebrate life!
                 </p>
 
-                <EpicCard defaultText={defaultBirthdayText} theme={colorThemes[9]} />
+                <EpicCard defaultContent={defaultBirthdayText} defaultAuthor="" theme={colorThemes[4]} />
 
                 <Features />
                 <FAQ />

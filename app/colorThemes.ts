@@ -19,14 +19,6 @@ const colorThemes: ColorTheme[] = [
         titleColor: "#001F3F"
     },
     {
-        name: "Green",
-        websiteTheme: "#166434",
-        textColor: "#166434",
-        cardBackground: "#f3f4f6",
-        borderBackground: "#fff",
-        titleColor: "#0B4619"
-    },
-    {
         name: "Fresh Morning",
         websiteTheme: "#4682B4",
         textColor: "#1E90FF",
@@ -43,14 +35,6 @@ const colorThemes: ColorTheme[] = [
         titleColor: "#FF1493"
     },
     {
-        name: "Monochrome Elegance",
-        websiteTheme: "#2C3E50",
-        textColor: "#34495E",
-        cardBackground: "#ECF0F1",
-        borderBackground: "#BDC3C7",
-        titleColor: "#2C3E50"
-    },
-    {
         name: "Tropical Paradise",
         websiteTheme: "#00CED1",
         textColor: "#20B2AA",
@@ -59,44 +43,12 @@ const colorThemes: ColorTheme[] = [
         titleColor: "#48D1CC"
     },
     {
-        name: "Cosmic Galaxy",
-        websiteTheme: "#483D8B",
-        textColor: "#4B0082",
-        cardBackground: "#E6E6FA",
-        borderBackground: "#9370DB",
-        titleColor: "#8A2BE2"
-    },
-    {
-        name: "Urban Chic",
-        websiteTheme: "#696969",
-        textColor: "#2F4F4F",
-        cardBackground: "#F5F5F5",
-        borderBackground: "#A9A9A9",
-        titleColor: "#4A4A4A"
-    },
-    {
-        name: "Retro Pop",
-        websiteTheme: "#FF6347",
-        textColor: "#FF4500",
-        cardBackground: "#FFDAB9",
-        borderBackground: "#FFA07A",
-        titleColor: "#FF7F50"
-    },
-    {
         name: "Birthday Celebration",
         websiteTheme: "#FF69B4",
         textColor: "#FF1493",
         cardBackground: "#FFF0F5",
         borderBackground: "#FFB6C1",
         titleColor: "#FF1493"
-    },
-    {
-        name: "Inspiring Wisdom",
-        websiteTheme: "#4B0082",
-        textColor: "#8A2BE2",
-        cardBackground: "#E6E6FA",
-        borderBackground: "#9370DB",
-        titleColor: "#4B0082"
     }
 ];
 

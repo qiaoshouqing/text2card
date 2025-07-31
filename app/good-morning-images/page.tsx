@@ -3,7 +3,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import EpicCard from '../../components/EpicCard';
-import { ColorTheme } from '../../app/colorThemes';
+import { ColorTheme, colorThemes } from '../../app/colorThemes';
 import Footer from "../../components/Footer";
 
 export const metadata: Metadata = {
@@ -12,16 +12,9 @@ export const metadata: Metadata = {
     keywords: 'good morning images, morning card maker, free morning greetings, online greeting card creator, daily inspiration',
 };
 
-const morningTheme: ColorTheme = {
-    name: "Fresh Morning",
-    websiteTheme: "#4682B4",
-    textColor: "#1E90FF",
-    cardBackground: "#F0F8FF",
-    borderBackground: "#87CEEB",
-    titleColor: "#1E90FF",
-};
 
-const defaultMorningText = `Good Morning!
+const morningGreetings = [
+    `Good Morning!
 ☀️🌞🌻
 
 
@@ -33,11 +26,63 @@ positivity, success, and joy!
 Rise and shine!
 
 
-#GoodMorning #DailyInspiration`;
+#GoodMorning #DailyInspiration`,
+
+    `Wake up and shine! ✨
+🌅
+
+
+Every morning is a new opportunity
+to make your dreams come true.
+Start fresh, stay positive!
+
+
+Good Morning!
+
+
+#MorningMotivation #NewDay`,
+
+    `Good Morning! 🌻
+🌞☀️
+
+
+Today is full of possibilities.
+Embrace the sunshine and
+let your light shine bright!
+
+
+Have a wonderful day!
+
+
+#GoodMorning #Sunshine`,
+
+    `Rise and Grind! ⭐
+🌅
+
+
+A new day means new chances
+to grow, learn, and succeed.
+Make today amazing!
+
+
+Good Morning!
+
+
+#MorningVibes #Success`
+];
+
+const getRandomMorningGreeting = () => {
+    return morningGreetings[Math.floor(Math.random() * morningGreetings.length)];
+};
 
 export default function GoodMorningPage() {
+    const [currentGreeting, setCurrentGreeting] = React.useState(getRandomMorningGreeting());
+
+    const handleNewGreeting = () => {
+        setCurrentGreeting(getRandomMorningGreeting());
+    };
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-100 to-yellow-100 p-8 md:p-12 lg:p-16">
+        <div className="min-h-screen bg-gradient-to-br from-pink-100 to-blue-100 p-8 md:p-12 lg:p-16">
             <div className="max-w-6xl mx-auto">
                 <nav className="mb-8">
                     <Link href="/" className="text-blue-600 hover:text-blue-800 transition-colors">
@@ -52,7 +97,16 @@ export default function GoodMorningPage() {
                     Start your day right by crafting beautiful good morning messages. Spread positivity and motivation!
                 </p>
 
-                <EpicCard defaultText={defaultMorningText} theme={morningTheme} />
+                <EpicCard defaultContent={currentGreeting} defaultAuthor="" theme={colorThemes[2]} />
+
+                <div className="mt-8 text-center">
+                    <button
+                        onClick={handleNewGreeting}
+                        className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition-colors"
+                    >
+                        Generate New Greeting
+                    </button>
+                </div>
 
                 <Features />
                 <FAQ />

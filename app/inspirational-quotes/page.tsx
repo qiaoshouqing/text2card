@@ -408,27 +408,27 @@ export default function InspirationalQuotesPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-purple-100 to-indigo-100 p-8 md:p-12 lg:p-16">
+        <div className="min-h-screen bg-gradient-to-br from-pink-100 to-blue-100 p-8 md:p-12 lg:p-16">
             <div className="max-w-6xl mx-auto">
                 <nav className="mb-8">
-                    <Link href="/" className="text-purple-600 hover:text-purple-800 transition-colors">
+                    <Link href="/" className="text-blue-600 hover:text-blue-800 transition-colors">
                         ← Back to Home
                     </Link>
                 </nav>
 
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-purple-600 text-center">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-blue-600 text-center">
                     Create Inspiring Quote Images
                 </h1>
                 <p className="text-xl md:text-2xl text-gray-700 mb-12 text-center max-w-3xl mx-auto">
                     Craft beautiful inspirational quotes to motivate yourself and others. Spread wisdom and positivity!
                 </p>
 
-                <EpicCard defaultText={currentQuote} theme={colorThemes[10]} />
+                <EpicCard defaultContent={currentQuote} defaultAuthor="" theme={colorThemes[2]} />
 
                 <div className="mt-8 text-center">
                     <button
                         onClick={handleNewQuote}
-                        className="bg-purple-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-purple-700 transition-colors"
+                        className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition-colors">
                     >
                         Generate New Quote
                     </button>
@@ -444,7 +444,7 @@ export default function InspirationalQuotesPage() {
 
 const Features: React.FC = () => (
     <section className="mt-20 bg-white rounded-xl shadow-lg p-8 md:p-12">
-        <h2 className="text-3xl md:text-4xl font-bold mb-8 text-purple-600">Why Use Our Inspirational Quote Maker?</h2>
+        <h2 className="text-3xl md:text-4xl font-bold mb-8 text-blue-600">Why Use Our Inspirational Quote Maker?</h2>
         <div className="grid md:grid-cols-2 gap-8">
             <FeatureCard
                 title="Daily Inspiration"
@@ -468,7 +468,7 @@ const Features: React.FC = () => (
 
 const FAQ: React.FC = () => (
     <section className="mt-20 bg-white rounded-xl shadow-lg p-8 md:p-12">
-        <h2 className="text-3xl md:text-4xl font-bold mb-8 text-purple-600">Frequently Asked Questions</h2>
+        <h2 className="text-3xl md:text-4xl font-bold mb-8 text-blue-600">Frequently Asked Questions</h2>
         <div className="space-y-6">
             <FAQItem
                 question="How can I create an inspirational quote image?"
@@ -487,15 +487,15 @@ const FAQ: React.FC = () => (
 );
 
 const FeatureCard: React.FC<{ title: string; description: string }> = ({ title, description }) => (
-    <div className="bg-purple-50 rounded-lg p-6 shadow-md">
-        <h3 className="text-xl font-semibold mb-3 text-purple-600">{title}</h3>
+    <div className="bg-blue-50 rounded-lg p-6 shadow-md">
+        <h3 className="text-xl font-semibold mb-3 text-blue-600">{title}</h3>
         <p className="text-gray-700">{description}</p>
     </div>
 );
 
 const FAQItem: React.FC<{ question: string; answer: string }> = ({ question, answer }) => (
     <div>
-        <h3 className="text-xl font-semibold mb-2 text-purple-600">{question}</h3>
+        <h3 className="text-xl font-semibold mb-2 text-blue-600">{question}</h3>
         <p className="text-gray-700">{answer}</p>
     </div>
 );
