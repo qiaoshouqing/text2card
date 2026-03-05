@@ -429,7 +429,6 @@ export default function InspirationalQuotesPage() {
                     <button
                         onClick={handleNewQuote}
                         className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition-colors">
-                    >
                         Generate New Quote
                     </button>
                 </div>

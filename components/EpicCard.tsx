@@ -144,8 +144,6 @@ const EpicCard: React.FC<EpicCardProps> = ({
             ensureFontLoaded(textPreviewWrapper).then(() => {
                 return snapdom.toCanvas(textPreviewWrapper, {
                     scale: scale,
-                    useCORS: true,
-                    allowTaint: true,
                 });
             }).then((canvas) => {
                 // Always use mobile standard (60px margin) for consistent behavior
@@ -179,8 +177,6 @@ const EpicCard: React.FC<EpicCardProps> = ({
             ensureFontLoaded(textPreviewWrapper).then(() => {
                 return snapdom.toCanvas(textPreviewWrapper, {
                     scale: scale,
-                    useCORS: true,
-                    allowTaint: true,
                 });
             }).then((canvas) => {
                 // Always use mobile standard (60px margin) for consistent behavior
